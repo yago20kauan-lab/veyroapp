@@ -103,7 +103,7 @@ export default function Corpo() {
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={shown} margin={{ top: 8, right: 4, bottom: 0, left: -18 }}>
                 <XAxis dataKey="date" tickFormatter={shortDate} tick={{ fill: '#9AA3AE', fontSize: 10 }} axisLine={false} tickLine={false} minTickGap={30} />
-                <YAxis domain={['dataMin - 1', 'dataMax + 1']} tick={{ fill: '#9AA3AE', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v: number) => v.toFixed(0)} />
+                <YAxis domain={['dataMin - 1', 'dataMax + 1']} tick={{ fill: '#9AA3AE', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v: number) => v.toFixed(1).replace('.', ',')} />
                 <Tooltip contentStyle={{ background: '#1A1E24', border: '1px solid #262B33', borderRadius: 12, fontSize: 12 }} labelFormatter={(l) => shortDate(String(l))} formatter={(v, n) => [`${fmt(Number(v))} kg`, n === 'trend' ? 'tendência' : 'peso']} />
                 {goal && <ReferenceLine y={goal} stroke="#C6FF3D" strokeDasharray="4 4" strokeOpacity={0.5} />}
                 <Scatter dataKey="kg" fill="#5B616B" />
@@ -123,7 +123,7 @@ export default function Corpo() {
       )}
 
       {/* MEDIDAS */}
-      <SectionTitle kicker="Medidas" title="Cintura e composição" right={<PrimaryButton className="!min-h-[40px] !px-4 text-sm" onClick={() => setMOpen(true)}>+ Medidas</PrimaryButton>} />
+      <SectionTitle kicker="Medidas" title="Cintura e composição" right={<PrimaryButton className="!min-h-[40px] !px-4 text-sm" onClick={() => setMOpen(true)}>+ Medir</PrimaryButton>} />
       {waistDue && <div className="mb-3 rounded-btn border border-gold/40 bg-gold/10 px-3 py-2 text-sm text-gold">Hora de medir a cintura (a cada 15 dias, na altura do umbigo).</div>}
       <Card className="mb-6">
         {lastM ? (

@@ -173,7 +173,7 @@ export type PlanMeal = { name: string; time: string; items: MealItem[] }
 export type DietPlan = SyncFields & { id: string; version: number; name: string; validFrom: string; meals: PlanMeal[] }
 export type PlannedDay = SyncFields & { id: string; date: string; meals: PlanMeal[]; fromPlanId: string }
 export type FoodLog = SyncFields & { id: string; date: string; mealName: string; time?: string; foodId?: string; recipeId?: string; grams: number; macros: Macros; planned: boolean }
-export type DayNote = SyncFields & { id: string; date: string; text: string; isCheatMeal: boolean }
+export type DayNote = SyncFields & { id: string; date: string; text: string; isCheatMeal: boolean; steps?: number }
 export type Water = SyncFields & { id: string; date: string; ml: number }
 export type Supplement = SyncFields & { id: string; name: string; dose: number; unit: string; times: string[]; macros?: Macros; active?: boolean }
 export type SupplementLog = SyncFields & { id: string; supplementId: string; date: string; takenAt: string }
@@ -194,7 +194,7 @@ export type Goal = SyncFields & {
   isPrimary: boolean
 }
 export type ReadinessLog = SyncFields & { id: string; date: string; sleep: number; soreness: number; energy: number; sleepHours?: number; restingHr?: number; hrv?: number; score: number }
-export type WeeklyCheckin = SyncFields & { id: string; weekStart: string; trendKg: number; waistCm?: number; energy: number; hunger: number; sleep: number; recommendation: string; applied: boolean }
+export type WeeklyCheckin = SyncFields & { id: string; weekStart: string; trendKg: number; rate?: number | null; waistCm?: number; energy: number; hunger: number; sleep: number; recommendation: string; code?: string; applied: boolean }
 export type PlanVersion = SyncFields & { id: string; kind: 'training' | 'diet'; version: number; snapshot: unknown; createdAt: string }
 export type Program = {
   id: string

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db, type Session } from '../db/schema'
+import { db, type DayNote, type Session, type WeeklyCheckin } from '../db/schema'
 import { mine } from '../db/repo'
 import { Header } from '../ui/Header'
 import { Card, Label, PrimaryButton, EmptyState } from '../ui/primitives'
@@ -16,6 +16,9 @@ import { todayReadiness } from '../lib/readiness'
 import { readinessAdvice } from '../domain/readiness'
 import { useState } from 'react'
 import { save } from '../db/repo'
+import { BottomSheet } from '../ui/overlays'
+import { WheelPicker } from '../ui/WheelPicker'
+import { weekStartOf } from './Checkin'
 import { dayLogs, latestTargets, plannedMeals, sumLogs, targetsFor, waterToday } from '../lib/diet'
 
 function greeting() {
@@ -82,6 +85,7 @@ export default function Hoje() {
       )}
       <ReadinessSheet open={checkin} onClose={() => setCheckin(false)} />
 
+      <CheckinBanner />
       <Card className="mb-4">
         <Label className="mb-2 text-lime">Treino de hoje</Label>
         {active ? (
@@ -132,13 +136,7 @@ export default function Hoje() {
           <Label>Peso</Label>
           <LastWeight />
         </Card>
-        <Card>
-          <Label>Passos</Label>
-          <div className="mt-2 flex items-center gap-3">
-            <Ring value={0} size={52} stroke={6}><span className="num text-[11px] font-bold">0</span></Ring>
-            <span className="text-xs text-muted">meta<br />8–10 mil</span>
-          </div>
-        </Card>
+        <StepsCard />
         <WaterCard />
         <DietCard />
       </div>
@@ -190,5 +188,49 @@ function DietCard() {
       </div>
       <div className="num mt-2 text-xs text-muted">{Math.round(data?.total.kcal ?? 0)}{data?.t.kcal ? `/${data.t.kcal}` : ''} kcal · {Math.round(data?.total.p ?? 0)} g P</div>
     </Card>
+  )
+}
+
+function CheckinBanner() {
+  const nav = useNavigate()
+  const uid = useSession((s) => s.user?.id)
+  const show = useLiveQuery(async () => {
+    const last = (mine(await db.checkins.toArray()) as WeeklyCheckin[]).sort((a, b) => b.weekStart.localeCompare(a.weekStart))[0]
+    const hasWeights = (await db.bodyWeights.count()) > 0
+    if (!hasWeights) return false
+    if (last?.weekStart === weekStartOf()) return false
+    return new Date().getDay() === 0 || !last || Date.now() - Date.parse(last.weekStart + 'T00:00') > 8 * 86400000
+  }, [uid])
+  if (!show) return null
+  return (
+    <button onClick={() => nav('/checkin')} className="mb-4 flex w-full items-center justify-between rounded-card border border-lime/40 bg-lime/[0.06] px-4 py-3.5 text-left">
+      <span><span className="block text-sm font-semibold">Check-in da semana</span><span className="text-xs text-muted">Peso, cintura e como foi: 2 minutos</span></span>
+      <span className="text-lime">Fazer ›</span>
+    </button>
+  )
+}
+
+function StepsCard() {
+  const uid = useSession((s) => s.user?.id)
+  const [open, setOpen] = useState(false)
+  const [v, setV] = useState(8000)
+  const note = useLiveQuery(async () => (mine(await db.dayNotes.where('date').equals(localDate()).toArray()) as DayNote[]).at(-1), [uid])
+  const steps = note?.steps ?? 0
+  return (
+    <>
+      <Card onClick={() => { setV(steps || 8000); setOpen(true) }}>
+        <Label>Passos</Label>
+        <div className="mt-2 flex items-center gap-3">
+          <Ring value={steps} max={9000} size={52} stroke={6}><span className="num text-[10px] font-bold">{steps >= 1000 ? `${(steps / 1000).toFixed(1).replace('.', ',')}k` : steps}</span></Ring>
+          <span className="text-xs text-muted">meta<br />8–10 mil</span>
+        </div>
+      </Card>
+      <BottomSheet open={open} onClose={() => setOpen(false)} title="Passos de hoje" footer={
+        <PrimaryButton full onClick={async () => { await save('dayNotes', { ...(note ?? { text: '', isCheatMeal: false }), date: localDate(), steps: v }); setOpen(false) }}>Salvar</PrimaryButton>
+      }>
+        <p className="mb-3 text-sm text-muted">Veja no app Saúde do iPhone e informe aqui.</p>
+        <WheelPicker min={0} max={40000} step={250} value={v} onChange={setV} format={(x) => x.toLocaleString('pt-BR')} label="passos" accent />
+      </BottomSheet>
+    </>
   )
 }
