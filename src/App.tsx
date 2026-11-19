@@ -13,6 +13,10 @@ import Perfil from './pages/Perfil'
 import Auth from './pages/Auth'
 import Workout from './pages/Workout'
 import Summary from './pages/Summary'
+import Onboarding from './pages/Onboarding'
+import Recuperacao from './pages/Recuperacao'
+import PlanEditor, { RoutineEditor } from './pages/PlanEditor'
+import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import { useSession } from './store/session'
@@ -28,7 +32,7 @@ const tabs = [
   { to: '/progresso', label: 'Progresso', Icon: IconChart },
 ]
 
-const isFullScreen = (path: string) => path.startsWith('/treino/') || path.startsWith('/resumo/')
+const isFullScreen = (path: string) => path.startsWith('/treino/') || path.startsWith('/resumo/') || path.startsWith('/plano/')
 
 function TabBar() {
   const loc = useLocation()
@@ -62,6 +66,7 @@ function Screens() {
       <Routes location={loc}>
         <Route path="/treino/:id" element={<Workout />} />
         <Route path="/resumo/:id" element={<Summary />} />
+        <Route path="/plano/:id" element={<div className="pt-safe mx-auto max-w-md px-4"><RoutineEditor /></div>} />
       </Routes>
     )
   }
@@ -82,6 +87,9 @@ function Screens() {
           <Route path="/dieta" element={<Dieta />} />
           <Route path="/progresso" element={<Progresso />} />
           <Route path="/perfil" element={<Perfil />} />
+          <Route path="/recuperacao" element={<Recuperacao />} />
+          <Route path="/plano" element={<PlanEditor />} />
+          <Route path="/plano/:id" element={<RoutineEditor />} />
           <Route path="/_dev/ui" element={<DevUI />} />
         </Routes>
       </motion.main>
@@ -116,8 +124,10 @@ function useAuthListener() {
 }
 
 export default function App() {
-  const { ready, user, localMode } = useSession()
+  const { ready, user, localMode, bootSynced } = useSession()
   const recovery = useAuthListener()
+  const profileState = useLiveQuery(async () => ({ p: user ? await db.profiles.get(user.id) : undefined }), [user?.id])
+  const [skipOnboarding, setSkipOnboarding] = useState(false)
 
   useEffect(() => {
     if (user && !localMode) return startAutoSync()
@@ -135,6 +145,21 @@ export default function App() {
       <>
         <ToastHost />
         <Auth recovery={recovery} />
+      </>
+    )
+  }
+  if (!bootSynced || !profileState) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <VeyroLoader size={48} label="Sincronizando" />
+      </div>
+    )
+  }
+  if (!skipOnboarding && !profileState.p?.settings?.onboarded) {
+    return (
+      <>
+        <ToastHost />
+        <Onboarding onDone={() => setSkipOnboarding(true)} />
       </>
     )
   }

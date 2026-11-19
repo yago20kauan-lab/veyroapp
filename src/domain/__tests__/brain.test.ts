@@ -106,6 +106,15 @@ describe('ALVO DE HOJE · pausas e prontidão', () => {
   })
 })
 
+describe('deload', () => {
+  it('semana de deload: −40% de séries e sem subir carga', () => {
+    const t = run({ phase: { type: 'deload', week: 1 }, history: [sess('2026-11-17', [60, 12], [60, 12], [60, 12], [60, 12])] })
+    expect(t.sets).toBe(2)
+    expect(t.kg).toBe(60)
+    expect(t.kind).toBe('hold')
+  })
+})
+
 describe('ferramentas', () => {
   it('arredonda para o passo do equipamento', () => {
     expect(roundToStep(63.24, 0.5)).toBe(63)

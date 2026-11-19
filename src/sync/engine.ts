@@ -29,6 +29,7 @@ export function syncNow(): Promise<void> {
     if (!uid) return
     if (typeof navigator !== 'undefined' && !navigator.onLine) {
       st.setSync({ state: 'offline' })
+      useSession.setState({ bootSynced: true })
       return
     }
     st.setSync({ state: 'syncing', error: undefined })
@@ -40,6 +41,7 @@ export function syncNow(): Promise<void> {
       st.setSync({ state: navigator.onLine ? 'error' : 'offline', error: e instanceof Error ? e.message : String(e) })
     } finally {
       await refreshPending()
+      if (!useSession.getState().bootSynced) useSession.setState({ bootSynced: true })
     }
   })().finally(() => {
     running = null

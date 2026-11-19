@@ -61,7 +61,9 @@ function avgRpe(s: PastSession) {
 
 /** Séries planejadas: na fase de retorno, as séries da semana (ex.: "3-4" → 4). */
 export function plannedSets(item: Pick<RoutineItem, 'sets'>, phase?: Pick<PhaseRule, 'type' | 'sets'> | null) {
-  return phase?.type === 'return' && phase.sets ? parseSets(phase.sets, item.sets) : item.sets
+  if (phase?.type === 'return' && phase.sets) return parseSets(phase.sets, item.sets)
+  if (phase?.type === 'deload') return Math.max(1, Math.round(item.sets * 0.6))
+  return item.sets
 }
 
 function parseSets(spec: string | undefined, fallback: number) {
@@ -140,6 +142,11 @@ export function targetForToday(input: TargetInput): Target {
     }
   } else {
     t = { ...base, kg: lastKg, kind: 'more-reps', reason: 'Mantém: tente +1 rep por série' }
+  }
+  if (phase?.type === 'deload' && t.kind === 'up') {
+    t = { ...t, kg: lastKg, kind: 'hold', reason: 'Semana de deload: mesma carga, menos séries' }
+  } else if (phase?.type === 'deload') {
+    t = { ...t, reason: `Semana de deload: ${t.reason.charAt(0).toLowerCase()}${t.reason.slice(1)}` }
   }
   return applyReadiness(t, readiness, step, lastKg)
 }

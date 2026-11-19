@@ -108,6 +108,7 @@ export type Session = SyncFields & {
   feeling?: 1 | 2 | 3 | 4
   note?: string
   volume?: number
+  ignoreReadiness?: boolean
 }
 export type SetLog = SyncFields & {
   id: string

@@ -10,6 +10,11 @@ import { activeSession, startSession } from '../lib/workout'
 import { localDate } from '../domain/plan'
 import { useSession } from '../store/session'
 import { IconCheck } from '../ui/icons'
+import { ReadinessRing } from '../ui/charts'
+import { ReadinessSheet } from '../ui/ReadinessSheet'
+import { todayReadiness } from '../lib/readiness'
+import { readinessAdvice } from '../domain/readiness'
+import { useState } from 'react'
 
 function greeting() {
   const h = new Date().getHours()
@@ -28,6 +33,8 @@ export default function Hoje() {
   }, [uid])
   const exercises = useLiveQuery(() => db.exercises.toArray())
   const exName = new Map(exercises?.map((e) => [e.id, e.name]))
+  const readiness = useLiveQuery(() => todayReadiness(), [uid])
+  const [checkin, setCheckin] = useState(false)
   const date = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })
   const name = plan?.profile?.name
 
@@ -50,6 +57,28 @@ export default function Hoje() {
         <h1 className="mt-1 font-display text-[26px] font-bold leading-tight">{greeting()}{name ? `, ${name}` : ''}.</h1>
         {phaseChip && <div className="mt-2 inline-block rounded-full border border-lime/40 px-3 py-1 text-[11px] font-semibold tracking-label text-lime">{phaseChip}</div>}
       </div>
+
+      {readiness ? (
+        <Card className="mb-4" onClick={() => nav('/recuperacao')}>
+          <div className="flex items-center gap-4">
+            <ReadinessRing score={readiness.score} size={76} />
+            <div className="flex-1">
+              <Label>Prontidão</Label>
+              <div className="mt-0.5 font-semibold">{readinessAdvice(readiness.score).title}</div>
+              <div className="text-xs text-muted">{readinessAdvice(readiness.score).text}</div>
+            </div>
+          </div>
+        </Card>
+      ) : (
+        <button onClick={() => setCheckin(true)} className="mb-4 flex w-full items-center justify-between rounded-card border border-dashed border-border px-4 py-3.5 text-left">
+          <span>
+            <span className="block text-sm font-semibold">Como você está hoje?</span>
+            <span className="text-xs text-muted">Sono, dor e energia em 3 toques</span>
+          </span>
+          <span className="text-lime">Check-in ›</span>
+        </button>
+      )}
+      <ReadinessSheet open={checkin} onClose={() => setCheckin(false)} />
 
       <Card className="mb-4">
         <Label className="mb-2 text-lime">Treino de hoje</Label>

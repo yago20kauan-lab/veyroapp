@@ -55,7 +55,7 @@ export default function Treinar() {
 
       {active && plan && (
         <>
-          <SectionTitle kicker="Seu plano" title={active.programName} />
+          <SectionTitle kicker="Seu plano" title={active.programName} right={<button className="text-sm text-lime" onClick={() => nav('/plano')}>Editar</button>} />
           <Card className="mb-6">
             <div className="mb-3 flex flex-wrap gap-2">
               {plan.notStarted ? (

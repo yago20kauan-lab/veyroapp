@@ -15,7 +15,7 @@ npm run build      # gera a pasta dist/ para hospedar
 - [x] Etapa 2 — Contas (e-mail e senha), RLS, sincronização local-first, sair/exportar/excluir conta
 - [x] Etapa 3 — Cérebro do treino: alvo de hoje, retorno, pausas, prontidão, recordes, volume, tendência do peso, aquecimento, anilhas (47 testes)
 - [x] Etapa 4 — Ativar programa, treino do dia, treino ativo (alvo, seletores, descanso, superséries, troca, aquecimento, anilhas, notas), recordes com tela dourada e compartilhamento, resumo
-- [ ] Etapa 5 — Onboarding, Hoje, Recuperação, Programas, editor do plano
+- [x] Etapa 5 — Cadastro inicial, editor do plano (versões, exercícios próprios), prontidão, fadiga muscular, deload
 - [ ] Etapa 6 — Dieta completa
 - [ ] Etapa 7 — Corpo e evolução
 - [ ] Etapa 8 — Progresso, metas, polimento

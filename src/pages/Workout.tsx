@@ -17,6 +17,7 @@ import { fmtKg, plannedSets, platesPerSide, targetForToday, warmupSets, workingK
 import { headline } from '../domain/records'
 import { haptic } from '../lib/haptics'
 import { beep, unlockAudio } from '../lib/sound'
+import { todayReadiness } from '../lib/readiness'
 
 const RPE_NONE = 5.5
 const muscleLabel: Record<string, string> = {
@@ -60,11 +61,13 @@ export default function Workout() {
   const ex = exId ? exMap.get(exId) : undefined
   const hist = useLiveQuery(() => (exId ? exerciseHistory(exId, id) : Promise.resolve(undefined)), [exId, id])
   const oldKg = exId ? profile?.settings.oldLoads?.[exId] : undefined
+  const readinessLog = useLiveQuery(() => todayReadiness())
+  const readiness = session?.ignoreReadiness ? undefined : readinessLog?.score
 
   const target = useMemo(() => {
     if (!ex || !item || !hist || !session) return null
-    return targetForToday({ exercise: ex, item, history: hist.sessions, phase: session.phase ?? null, oldKg })
-  }, [ex, item, hist, session, oldKg])
+    return targetForToday({ exercise: ex, item, history: hist.sessions, phase: session.phase ?? null, oldKg, readiness })
+  }, [ex, item, hist, session, oldKg, readiness])
 
   const exSets = allSets.filter((s) => s.exerciseId === exId)
   const done = exSets.filter((s) => s.type !== 'warmup')
@@ -216,6 +219,14 @@ export default function Workout() {
       </div>
 
       <div className="px-4 pt-4">
+        {readinessLog && readinessLog.score < 75 && (
+          <div className="mb-3 flex items-center justify-between rounded-btn border border-gold/40 bg-gold/10 px-3 py-2 text-sm">
+            <span className="text-gold">{session.ignoreReadiness ? `Prontidão ${readinessLog.score}: ajuste ignorado` : `Prontidão ${readinessLog.score}: cargas ajustadas`}</span>
+            <button className="font-semibold text-text" onClick={() => save('sessions', { ...session, ignoreReadiness: !session.ignoreReadiness })}>
+              {session.ignoreReadiness ? 'Aplicar' : 'Ignorar'}
+            </button>
+          </div>
+        )}
         {/* Card do exercício */}
         <AnimatePresence mode="wait">
           <motion.div key={ex.id + idx} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ duration: 0.18 }}>
