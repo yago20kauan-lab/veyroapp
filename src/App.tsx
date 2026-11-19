@@ -24,6 +24,7 @@ import Alimentos from './pages/diet/Alimentos'
 import Relatorio from './pages/diet/Relatorio'
 import Comparar from './pages/Comparar'
 import Checkin from './pages/Checkin'
+import IA from './pages/IA'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
@@ -101,6 +102,7 @@ function Screens() {
           <Route path="/recuperacao" element={<Recuperacao />} />
           <Route path="/plano" element={<PlanEditor />} />
           <Route path="/comparar" element={<Comparar />} />
+          <Route path="/ia" element={<IA />} />
           <Route path="/progresso/ex/:id" element={<ExerciseProgress />} />
           <Route path="/dieta/compras" element={<Compras />} />
           <Route path="/dieta/suplementos" element={<Suplementos />} />

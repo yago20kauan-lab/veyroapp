@@ -77,6 +77,12 @@ export default function Progresso() {
         <Card className="!p-3"><Label>Treinos</Label><div className="num mt-1 text-2xl font-bold">{sessions?.length ?? 0}</div></Card>
       </div>
 
+      {profile?.settings.aiEnabled !== false && (
+        <button onClick={() => nav('/ia')} className="mb-4 flex w-full items-center justify-between rounded-card border border-border bg-surface px-4 py-3.5 text-left">
+          <span><span className="block text-sm font-semibold">✦ Inteligência VEYRO</span><span className="text-xs text-muted">Montar e adaptar treinos, análise da semana, perguntas</span></span>
+          <span className="text-lime">›</span>
+        </button>
+      )}
       <SectionTitle kicker="Metas" title="Seus objetivos" right={<button className="text-sm text-lime" onClick={() => setGoalOpen(true)}>+ Meta</button>} />
       {!goals?.length ? (
         <EmptyState title="Nenhuma meta" text="Peso, cintura, % de gordura, uma carga, frequência, passos ou proteína. O VEYRO prevê quando você chega lá." action={<PrimaryButton onClick={() => setGoalOpen(true)}>Criar meta</PrimaryButton>} />

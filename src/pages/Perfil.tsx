@@ -52,6 +52,7 @@ function Ajustes() {
         <div><Label className="mb-1">Objetivo</Label><div className="flex flex-wrap gap-2">{(['cut', 'maintain', 'bulk'] as const).map((g) => <Chip key={g} active={f.goal === g} onClick={() => set({ goal: g })}>{{ cut: 'Definição', maintain: 'Manutenção', bulk: 'Ganho' }[g]}</Chip>)}</div></div>
         <div><Label className="mb-1">Treinos por semana</Label><div className="flex gap-2">{[3, 4, 5, 6].map((d) => <Chip key={d} active={Number(st.trainingDays ?? 5) === d} onClick={() => setS({ trainingDays: d })}>{d}</Chip>)}</div></div>
         <div><Label className="mb-1">Barra olímpica</Label><div className="flex gap-2">{[20, 15, 10].map((b) => <Chip key={b} active={Number(st.barKg ?? 20) === b} onClick={() => setS({ barKg: b })}>{b} kg</Chip>)}</div></div>
+        <div><Label className="mb-1">Inteligência VEYRO (IA)</Label><div className="flex gap-2"><Chip active={st.aiEnabled !== false} onClick={() => setS({ aiEnabled: true })}>Ligada</Chip><Chip active={st.aiEnabled === false} onClick={() => setS({ aiEnabled: false })}>Desligada</Chip></div></div>
         <div><Label className="mb-1">Som no fim do descanso</Label><div className="flex gap-2"><Chip active={st.sound !== false} onClick={() => setS({ sound: true })}>Ligado</Chip><Chip active={st.sound === false} onClick={() => setS({ sound: false })}>Desligado</Chip></div></div>
         <PrimaryButton full onClick={async () => { await save('profiles', f as Profile); toast('Ajustes salvos') }}>Salvar ajustes</PrimaryButton>
       </Card>

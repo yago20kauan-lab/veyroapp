@@ -61,7 +61,10 @@ export default function Hoje() {
       <div className="mb-5">
         <Label>{date}</Label>
         <h1 className="mt-1 font-display text-[26px] font-bold leading-tight">{greeting()}{name ? `, ${name}` : ''}.</h1>
-        {phaseChip && <div className="mt-2 inline-block rounded-full border border-lime/40 px-3 py-1 text-[11px] font-semibold tracking-label text-lime">{phaseChip}</div>}
+        <div className="mt-2 flex flex-wrap gap-2">
+          {phaseChip && <div className="inline-block rounded-full border border-lime/40 px-3 py-1 text-[11px] font-semibold tracking-label text-lime">{phaseChip}</div>}
+          {plan?.profile?.settings.aiEnabled !== false && <button onClick={() => nav('/ia')} className="rounded-full border border-border px-3 py-1 text-[11px] font-semibold tracking-label text-text">✦ IA</button>}
+        </div>
       </div>
 
       {readiness ? (

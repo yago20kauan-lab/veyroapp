@@ -19,7 +19,7 @@ npm run build      # gera a pasta dist/ para hospedar
 - [x] Etapa 6 — Dieta: calculador, metas g/%, treino×descanso, diário, TACO (597 alimentos), receitas, favoritas, plano com ajuste automático e 30 dias, trocas, calorias adaptativas, lista de compras, suplementos, água, relatório
 - [x] Etapa 7 — Corpo: tendência e ritmo, meta, medidas, % de gordura (Marinha), massa magra×gorda, fotos privadas (Storage), comparador, timelapse em vídeo, comparar 30/90, check-in semanal com motor de ajuste, passos
 - [x] Etapa 8 — Progresso: sequência semanal, metas com previsão (7 tipos) e comemoração, calendário 12 semanas, séries por músculo, evolução por exercício (1RM, carga, volume, recordes por faixa, platô), medalhas, ajustes (perfil, barra, som), CSV
-- [ ] Etapa 9 — IA (opcional)
+- [x] Etapa 9 — IA: função no Supabase (chave só no servidor, limite 30/dia), montar treino, adaptar treino de hoje, análise da semana, perguntas; validação zod, revisão antes de aplicar, funciona sem IA
 
 ## Estrutura
 - `src/ui` — design system (marca, primitivos, seletor de rolagem, gráficos, folhas, timer)
@@ -38,3 +38,8 @@ npm run build      # gera a pasta dist/ para hospedar
 Composição de alimentos: Tabela Brasileira de Composição de Alimentos (TACO), 4ª ed. revisada e ampliada,
 NEPA/UNICAMP, 2011 — reprodução permitida citando a fonte. JSON base: github.com/marcelosanto/tabela_taco (MIT);
 gerado com `scripts/build_taco.py`.
+
+## IA (Etapa 9) — publicar a função
+1. SQL Editor → cole `supabase/002b_ai_usage.sql` → Run
+2. Edge Functions → Deploy a new function → Via editor → nome `veyro-ai` → cole `supabase/functions/veyro-ai/index.ts` → Deploy
+3. Edge Functions → Secrets → `ANTHROPIC_API_KEY` = sua chave (console.anthropic.com). Opcional: `VEYRO_MODEL`.
