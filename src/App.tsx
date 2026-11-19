@@ -11,6 +11,8 @@ import Progresso from './pages/Progresso'
 import DevUI from './pages/DevUI'
 import Perfil from './pages/Perfil'
 import Auth from './pages/Auth'
+import Workout from './pages/Workout'
+import Summary from './pages/Summary'
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import { useSession } from './store/session'
@@ -26,7 +28,11 @@ const tabs = [
   { to: '/progresso', label: 'Progresso', Icon: IconChart },
 ]
 
+const isFullScreen = (path: string) => path.startsWith('/treino/') || path.startsWith('/resumo/')
+
 function TabBar() {
+  const loc = useLocation()
+  if (isFullScreen(loc.pathname)) return null
   return (
     <nav className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-border bg-bg/90 backdrop-blur-xl" aria-label="Navegação principal">
       <div className="mx-auto flex max-w-md">
@@ -51,6 +57,14 @@ function TabBar() {
 
 function Screens() {
   const loc = useLocation()
+  if (isFullScreen(loc.pathname)) {
+    return (
+      <Routes location={loc}>
+        <Route path="/treino/:id" element={<Workout />} />
+        <Route path="/resumo/:id" element={<Summary />} />
+      </Routes>
+    )
+  }
   return (
     <AnimatePresence mode="wait">
       <motion.main
@@ -91,7 +105,7 @@ function useAuthListener() {
       if (event === 'PASSWORD_RECOVERY') setRecovery(true)
       const u = session?.user
       if (u) {
-        onUserChange(u.id).then(() => setUser({ id: u.id, email: u.email }))
+        onUserChange(u.id).then(() => setUser({ id: u.id, email: u.email, name: (u.user_metadata as { name?: string })?.name }))
       } else {
         setUser(null)
       }

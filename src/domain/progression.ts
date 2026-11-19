@@ -59,6 +59,11 @@ function avgRpe(s: PastSession) {
   return r.length ? r.reduce((a, b) => a + b, 0) / r.length : undefined
 }
 
+/** Séries planejadas: na fase de retorno, as séries da semana (ex.: "3-4" → 4). */
+export function plannedSets(item: Pick<RoutineItem, 'sets'>, phase?: Pick<PhaseRule, 'type' | 'sets'> | null) {
+  return phase?.type === 'return' && phase.sets ? parseSets(phase.sets, item.sets) : item.sets
+}
+
 function parseSets(spec: string | undefined, fallback: number) {
   if (!spec) return fallback
   const n = spec.split('-').map(Number).filter((x) => !Number.isNaN(x))
@@ -67,7 +72,7 @@ function parseSets(spec: string | undefined, fallback: number) {
 
 export function targetForToday(input: TargetInput): Target {
   const { exercise: ex, item, history, phase, oldKg, readiness, today = new Date() } = input
-  const base = { repMin: item.repMin, repMax: item.repMax, sets: item.sets, rpeMax: phase?.rpeMax }
+  const base = { repMin: item.repMin, repMax: item.repMax, sets: plannedSets(item, phase), rpeMax: phase?.rpeMax }
   const step = ex.stepKg || 0.5
 
   if (ex.kind === 'cardio') return { ...base, kg: null, kind: 'none', reason: 'Cardio: siga o tempo planejado' }
@@ -76,7 +81,8 @@ export function targetForToday(input: TargetInput): Target {
   let t: Target
 
   // 1) Modo Retorno: percentual da carga antiga
-  if (phase?.type === 'return' && phase.pct) {
+  const hasHistory = history.some((s) => working(s).length > 0)
+  if (phase?.type === 'return' && phase.pct && (oldKg || !hasHistory)) {
     const sets = parseSets(phase.sets, item.sets)
     if (!oldKg) {
       t = { ...base, sets, kg: null, kind: 'calibrate', reason: 'Quanto você usava antes? Informe na 1ª série' }

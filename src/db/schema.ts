@@ -31,17 +31,29 @@ export type Exercise = {
   deleted_at?: string | null
 }
 
+export type ActivePlan = { programId: string; programName: string; startDate: string }
+export type ProfileSettings = {
+  activePlan?: ActivePlan
+  /** cargas antigas informadas no Modo Retorno (exerciseId → kg) */
+  oldLoads?: Record<string, number>
+  /** descanso padrão salvo por exercício (s) */
+  restOverrides?: Record<string, number>
+  /** notas fixas por exercício */
+  exerciseNotes?: Record<string, string>
+  sound?: boolean
+  [k: string]: unknown
+}
 export type Profile = SyncFields & {
   id: string
   name: string
-  sex: 'm' | 'f'
-  birthDate: string
-  heightCm: number
-  goal: 'cut' | 'maintain' | 'bulk'
+  sex?: 'm' | 'f'
+  birthDate?: string
+  heightCm?: number
+  goal?: 'cut' | 'maintain' | 'bulk'
   targetWeightKg?: number
-  startDate: string
-  returnMode: boolean
-  settings: Record<string, unknown>
+  startDate?: string
+  returnMode?: boolean
+  settings: ProfileSettings
 }
 
 export type RoutineItem = {
@@ -54,7 +66,18 @@ export type RoutineItem = {
   seconds?: number
   minutes?: number
 }
-export type Routine = SyncFields & { id: string; name: string; weekday?: number; phaseId?: string; order: number; items: RoutineItem[]; planVersion: number }
+export type Routine = SyncFields & {
+  id: string
+  name: string
+  weekday?: number
+  phaseId?: string
+  order: number
+  items: RoutineItem[]
+  planVersion: number
+  /** semana do plano a partir da qual esta rotina vale (troca de divisão) */
+  fromWeek?: number
+  programId?: string
+}
 export type Phase = SyncFields & {
   id: string
   name: string
@@ -63,15 +86,28 @@ export type Phase = SyncFields & {
   weeks: number | null
   rules: { week: number; pct: number; sets: string; rpeMax: number }[]
 }
+export type SessionPhase = { type: 'return' | 'normal' | 'deload'; week: number; pct?: number; sets?: string; rpeMax?: number; name: string }
 export type Session = SyncFields & {
   id: string
   routineId?: string
+  routineName?: string
   phaseId?: string
+  /** foto da fase no início do treino */
+  phase?: SessionPhase | null
+  planWeek?: number
+  /** itens do treino no início (editar o plano não muda treinos passados) */
+  items?: RoutineItem[]
+  /** trocas feitas no treino: índice do item → exerciseId */
+  swaps?: Record<number, string>
+  currentIndex?: number
+  restEndsAt?: number
+  restTotal?: number
   startedAt: string
   endedAt?: string
   status: 'active' | 'finished' | 'abandoned'
   feeling?: 1 | 2 | 3 | 4
   note?: string
+  volume?: number
 }
 export type SetLog = SyncFields & {
   id: string

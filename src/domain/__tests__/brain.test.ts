@@ -33,6 +33,13 @@ describe('ALVO DE HOJE · Modo Retorno', () => {
     expect(t.kg).toBeNull()
     expect(t.kind).toBe('calibrate')
   })
+  it('retorno sem carga antiga mas com histórico: progride pelo histórico com as séries da fase', () => {
+    const t = run({ phase: { type: 'return', week: 2, pct: 0.7, sets: '3', rpeMax: 7.5 }, history: [sess('2026-11-17', [20, 12], [20, 12])] })
+    expect(t.kind).toBe('up')
+    expect(t.kg).toBe(22.5)
+    expect(t.sets).toBe(3)
+    expect(t.rpeMax).toBe(7.5)
+  })
   it('séries da fase ("3-4" → 4)', () => {
     expect(run({ phase: { type: 'return', week: 4, pct: 0.9, sets: '3-4' }, oldKg: 90 }).sets).toBe(4)
   })
