@@ -119,3 +119,25 @@ export async function applyPlanToDays(plan: DietPlan, days: number) {
 export async function waterToday(date = localDate()) {
   return (mine(await db.water.where('date').equals(date).toArray()) as { ml: number }[]).reduce((a, w) => a + w.ml, 0)
 }
+
+/* ---------- Definições do diário (estilo "Macros") ---------- */
+export type DiaryMeal = { name: string; time: string }
+export const DEFAULT_MEALS: DiaryMeal[] = [
+  { name: 'Café da manhã', time: '08:00' },
+  { name: 'Almoço', time: '13:00' },
+  { name: 'Lanche', time: '16:00' },
+  { name: 'Pré-treino', time: '19:00' },
+  { name: 'Jantar', time: '21:30' },
+]
+export type DiarySettings = { meals: DiaryMeal[]; stickyHeader: boolean; showTimes: boolean; custom: boolean }
+
+export async function diarySettings(): Promise<DiarySettings> {
+  const p = await getProfile()
+  const d = (p?.settings.diary ?? {}) as Partial<DiarySettings>
+  let meals = d.meals
+  if (!meals?.length) {
+    const plan = await currentPlan()
+    meals = plan?.meals.length ? plan.meals.map((m) => ({ name: m.name, time: m.time })) : DEFAULT_MEALS
+  }
+  return { meals, stickyHeader: d.stickyHeader ?? true, showTimes: d.showTimes ?? true, custom: !!d.meals?.length }
+}

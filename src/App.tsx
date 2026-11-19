@@ -22,6 +22,8 @@ import Compras from './pages/diet/Compras'
 import Suplementos from './pages/diet/Suplementos'
 import Alimentos from './pages/diet/Alimentos'
 import Relatorio from './pages/diet/Relatorio'
+import AdicionarAlimento from './pages/diet/AdicionarAlimento'
+import DefinicoesDiario from './pages/diet/DefinicoesDiario'
 import Comparar from './pages/Comparar'
 import Checkin from './pages/Checkin'
 import IA from './pages/IA'
@@ -41,7 +43,7 @@ const tabs = [
   { to: '/progresso', label: 'Progresso', Icon: IconChart },
 ]
 
-const isFullScreen = (path: string) => path.startsWith('/treino/') || path.startsWith('/resumo/') || path.startsWith('/plano/') || path === '/checkin' || path === '/dieta/metas' || path === '/dieta/plano'
+const isFullScreen = (path: string) => path.startsWith('/treino/') || path.startsWith('/resumo/') || path.startsWith('/plano/') || path === '/checkin' || path.startsWith('/dieta/adicionar/') || path === '/dieta/definicoes' || path === '/dieta/metas' || path === '/dieta/plano'
 
 function TabBar() {
   const loc = useLocation()
@@ -76,6 +78,8 @@ function Screens() {
         <Route path="/treino/:id" element={<Workout />} />
         <Route path="/resumo/:id" element={<Summary />} />
         <Route path="/checkin" element={<Checkin />} />
+        <Route path="/dieta/adicionar/:date/:meal" element={<AdicionarAlimento />} />
+        <Route path="/dieta/definicoes" element={<div className="pt-safe mx-auto max-w-md px-4"><DefinicoesDiario /></div>} />
         <Route path="/dieta/metas" element={<div className="pt-safe mx-auto max-w-md px-4"><Metas /></div>} />
         <Route path="/dieta/plano" element={<div className="pt-safe mx-auto max-w-md px-4"><PlanoAlimentar /></div>} />
         <Route path="/plano/:id" element={<div className="pt-safe mx-auto max-w-md px-4"><RoutineEditor /></div>} />
@@ -109,6 +113,8 @@ function Screens() {
           <Route path="/dieta/alimentos" element={<Alimentos />} />
           <Route path="/dieta/relatorio" element={<Relatorio />} />
           <Route path="/checkin" element={<Checkin />} />
+        <Route path="/dieta/adicionar/:date/:meal" element={<AdicionarAlimento />} />
+        <Route path="/dieta/definicoes" element={<div className="pt-safe mx-auto max-w-md px-4"><DefinicoesDiario /></div>} />
         <Route path="/dieta/metas" element={<div className="pt-safe mx-auto max-w-md px-4"><Metas /></div>} />
         <Route path="/dieta/plano" element={<div className="pt-safe mx-auto max-w-md px-4"><PlanoAlimentar /></div>} />
         <Route path="/plano/:id" element={<RoutineEditor />} />

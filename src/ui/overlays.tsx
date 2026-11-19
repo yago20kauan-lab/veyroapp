@@ -86,17 +86,21 @@ export function BottomSheet({
 }
 
 /* ---------- Toast ---------- */
-type ToastState = { msg: string | null; show: (m: string) => void }
-export const useToast = create<ToastState>((set) => ({
+type ToastAction = { label: string; fn: () => void }
+type ToastState = { msg: string | null; action?: ToastAction; seq: number; show: (m: string, action?: ToastAction) => void; hide: () => void }
+export const useToast = create<ToastState>((set, get) => ({
   msg: null,
-  show: (m) => {
-    set({ msg: m })
-    setTimeout(() => set({ msg: null }), 2400)
+  seq: 0,
+  show: (m, action) => {
+    const seq = get().seq + 1
+    set({ msg: m, action, seq })
+    setTimeout(() => get().seq === seq && set({ msg: null, action: undefined }), action ? 4500 : 2400)
   },
+  hide: () => set({ msg: null, action: undefined }),
 }))
 
 export function ToastHost() {
-  const msg = useToast((s) => s.msg)
+  const { msg, action, hide } = useToast()
   return (
     <AnimatePresence>
       {msg && (
@@ -106,7 +110,14 @@ export function ToastHost() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -40, opacity: 0 }}
         >
-          <div className="rounded-full border border-border bg-surface2 px-4 py-2.5 text-sm font-medium shadow-lg">{msg}</div>
+          <div className="flex items-center gap-3 rounded-full border border-border bg-surface2 px-4 py-2.5 text-sm font-medium shadow-lg">
+            <span>{msg}</span>
+            {action && (
+              <button className="font-semibold text-lime" onClick={() => { action.fn(); hide() }}>
+                {action.label}
+              </button>
+            )}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
