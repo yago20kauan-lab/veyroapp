@@ -7,7 +7,7 @@ import Hoje from './pages/Hoje'
 import Treinar from './pages/Treinar'
 import Corpo from './pages/Corpo'
 import Dieta from './pages/Dieta'
-import Progresso from './pages/Progresso'
+import Progresso, { ExerciseProgress } from './pages/Progresso'
 import DevUI from './pages/DevUI'
 import Perfil from './pages/Perfil'
 import Auth from './pages/Auth'
@@ -101,6 +101,7 @@ function Screens() {
           <Route path="/recuperacao" element={<Recuperacao />} />
           <Route path="/plano" element={<PlanEditor />} />
           <Route path="/comparar" element={<Comparar />} />
+          <Route path="/progresso/ex/:id" element={<ExerciseProgress />} />
           <Route path="/dieta/compras" element={<Compras />} />
           <Route path="/dieta/suplementos" element={<Suplementos />} />
           <Route path="/dieta/alimentos" element={<Alimentos />} />

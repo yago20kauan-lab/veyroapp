@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db, type DayNote, type Session, type WeeklyCheckin } from '../db/schema'
+import { db, type DayNote, type Goal, type Session, type WeeklyCheckin } from '../db/schema'
 import { mine } from '../db/repo'
 import { Header } from '../ui/Header'
 import { Card, Label, PrimaryButton, EmptyState } from '../ui/primitives'
@@ -19,6 +19,7 @@ import { save } from '../db/repo'
 import { BottomSheet } from '../ui/overlays'
 import { WheelPicker } from '../ui/WheelPicker'
 import { weekStartOf } from './Checkin'
+import { evaluate, GOAL_TYPES } from '../lib/goals'
 import { dayLogs, latestTargets, plannedMeals, sumLogs, targetsFor, waterToday } from '../lib/diet'
 
 function greeting() {
@@ -131,6 +132,7 @@ export default function Hoje() {
         )}
       </Card>
 
+      <PrimaryGoal />
       <div className="grid grid-cols-2 gap-3">
         <Card onClick={() => nav('/corpo')}>
           <Label>Peso</Label>
@@ -232,5 +234,26 @@ function StepsCard() {
         <WheelPicker min={0} max={40000} step={250} value={v} onChange={setV} format={(x) => x.toLocaleString('pt-BR')} label="passos" accent />
       </BottomSheet>
     </>
+  )
+}
+
+function PrimaryGoal() {
+  const nav = useNavigate()
+  const uid = useSession((s) => s.user?.id)
+  const data = useLiveQuery(async () => {
+    const g = (mine(await db.goals.toArray()) as Goal[]).find((x) => x.isPrimary && x.status === 'active')
+    if (!g) return null
+    const ev = await evaluate(g)
+    const ex = g.exerciseId ? await db.exercises.get(g.exerciseId) : undefined
+    return { g, ev, name: g.type === 'lift' ? `${ex?.name ?? ''} ${String(g.target).replace('.', ',')} kg` : `${GOAL_TYPES[g.type].label}: ${String(g.target).replace('.', ',')} ${GOAL_TYPES[g.type].unit}` }
+  }, [uid])
+  if (!data) return null
+  return (
+    <Card className="mb-4" onClick={() => nav('/progresso')}>
+      <div className="flex items-center justify-between"><Label>Meta principal</Label><span className="num text-xs text-muted">{Math.round(data.ev.ev.progress * 100)}%</span></div>
+      <div className="mt-1 text-sm font-semibold">{data.name}</div>
+      <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface2"><div className="h-full rounded-full bg-lime" style={{ width: `${data.ev.ev.progress * 100}%` }} /></div>
+      {data.ev.ev.etaDate && <div className="mt-1 text-xs text-muted">previsão: {new Date(data.ev.ev.etaDate + 'T12:00').toLocaleDateString('pt-BR')}</div>}
+    </Card>
   )
 }

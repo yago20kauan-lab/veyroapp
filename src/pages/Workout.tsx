@@ -445,7 +445,7 @@ export default function Workout() {
       <BottomSheet open={sheet === 'warmup'} onClose={() => setSheet(null)} title="Aquecimento">
         <p className="mb-3 text-sm text-muted">Séries leves antes do trabalho. Não contam para recorde nem volume.</p>
         <div className="flex flex-col gap-2">
-          {warmupSets(target.kg ?? 20, ex.stepKg || 0.5, ex.equipment === 'barbell' ? 20 : 0).map((w, i) => {
+          {warmupSets(target.kg ?? 20, ex.stepKg || 0.5, ex.equipment === 'barbell' ? Number(profile?.settings.barKg ?? 20) : 0).map((w, i) => {
             const isDone = warmDone.some((d) => d.setIndex === 100 + i)
             return (
               <button key={i} disabled={isDone} onClick={() => logWarmup(w, i)} className={`flex items-center justify-between rounded-btn border px-4 py-3 ${isDone ? 'border-lime/40 text-muted' : 'border-border'} bg-surface2`}>
@@ -459,10 +459,11 @@ export default function Workout() {
 
       <BottomSheet open={sheet === 'plates'} onClose={() => setSheet(null)} title={`Anilhas para ${fmtKg(kg)} kg`}>
         {(() => {
-          const { plates, remainder } = platesPerSide(kg, 20)
+          const bar = Number(profile?.settings.barKg ?? 20)
+          const { plates, remainder } = platesPerSide(kg, bar)
           return (
             <>
-              <p className="mb-4 text-sm text-muted">Barra de 20 kg. De cada lado:</p>
+              <p className="mb-4 text-sm text-muted">Barra de {bar} kg. De cada lado:</p>
               <div className="mb-4 flex items-center justify-center gap-1 py-4">
                 <div className="h-3 w-16 rounded-full bg-border" />
                 {plates.map((p, i) => (

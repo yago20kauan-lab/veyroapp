@@ -18,7 +18,7 @@ npm run build      # gera a pasta dist/ para hospedar
 - [x] Etapa 5 — Cadastro inicial, editor do plano (versões, exercícios próprios), prontidão, fadiga muscular, deload
 - [x] Etapa 6 — Dieta: calculador, metas g/%, treino×descanso, diário, TACO (597 alimentos), receitas, favoritas, plano com ajuste automático e 30 dias, trocas, calorias adaptativas, lista de compras, suplementos, água, relatório
 - [x] Etapa 7 — Corpo: tendência e ritmo, meta, medidas, % de gordura (Marinha), massa magra×gorda, fotos privadas (Storage), comparador, timelapse em vídeo, comparar 30/90, check-in semanal com motor de ajuste, passos
-- [ ] Etapa 8 — Progresso, metas, polimento
+- [x] Etapa 8 — Progresso: sequência semanal, metas com previsão (7 tipos) e comemoração, calendário 12 semanas, séries por músculo, evolução por exercício (1RM, carga, volume, recordes por faixa, platô), medalhas, ajustes (perfil, barra, som), CSV
 - [ ] Etapa 9 — IA (opcional)
 
 ## Estrutura

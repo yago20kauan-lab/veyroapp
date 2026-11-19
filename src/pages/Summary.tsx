@@ -11,6 +11,7 @@ import { finishSession, lastFinishedOfRoutine, sessionSets } from '../lib/workou
 import { totalVolume } from '../domain/volume'
 import { fmtKg } from '../domain/progression'
 import { IconTrophy } from '../ui/icons'
+import { checkAchievements } from '../lib/goals'
 
 const feelings = [
   { v: 1, e: '😫', t: 'Pesado' },
@@ -70,6 +71,8 @@ export default function Summary() {
       }
       const r = await finishSession(session, { feeling, note: note.trim() || undefined, cardio: cardioType ? { type: cardioType, minutes } : undefined })
       if (r.volPR) toast(`Recorde de volume do treino: ${r.volPR.label}`)
+      const novas = await checkAchievements()
+      if (novas.length) setTimeout(() => toast(`🏅 Medalha: ${novas.map((a) => a.title).join(', ')}`), 1200)
       nav('/')
     } finally {
       setBusy(false)
