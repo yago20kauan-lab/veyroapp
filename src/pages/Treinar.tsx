@@ -45,7 +45,19 @@ export default function Treinar() {
         </div>
       )}
 
-      <BottomSheet open={!!open} onClose={() => setOpen(null)} title={open?.name}>
+      <BottomSheet
+        open={!!open}
+        onClose={() => setOpen(null)}
+        title={open?.name}
+        footer={
+          <>
+            <PrimaryButton full onClick={() => toast('Ativar programa chega na próxima etapa')}>
+              Usar este programa
+            </PrimaryButton>
+            <Label className="mt-2 text-center">Tudo editável depois</Label>
+          </>
+        }
+      >
         {open && (
           <>
             <p className="mb-4 text-sm text-muted">{open.description}</p>
@@ -77,10 +89,6 @@ export default function Treinar() {
                 </div>
               ))}
             </div>
-            <PrimaryButton full className="mt-5" onClick={() => toast('Ativar programa chega na próxima etapa')}>
-              Usar este programa
-            </PrimaryButton>
-            <Label className="mt-3 text-center">Tudo editável depois</Label>
           </>
         )}
       </BottomSheet>

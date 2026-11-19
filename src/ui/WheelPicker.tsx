@@ -56,7 +56,7 @@ export function WheelPicker({ min, max, step, value, onChange, format, label, ac
         <div
           ref={ref}
           onScroll={onScroll}
-          className="no-scrollbar relative h-full snap-y snap-mandatory overflow-y-scroll"
+          className="no-scrollbar relative h-full snap-y snap-mandatory overflow-y-scroll overscroll-contain"
           style={{ paddingTop: ITEM * 2, paddingBottom: ITEM * 2 }}
           role="listbox"
           aria-label={label}

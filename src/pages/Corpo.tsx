@@ -68,9 +68,8 @@ export default function Corpo() {
       <SectionTitle kicker="Medidas" title="Cintura e composição" />
       <EmptyState title="Em breve" text="A cintura a cada 15 dias diz mais sobre a barriga do que a balança." />
 
-      <BottomSheet open={open} onClose={() => setOpen(false)} title="Peso de hoje">
+      <BottomSheet open={open} onClose={() => setOpen(false)} title="Peso de hoje" footer={<PrimaryButton full onClick={registrar}>Salvar {fmt(kg)} kg</PrimaryButton>}>
         <WheelPicker min={40} max={200} step={0.1} value={kg} onChange={setKg} format={fmt} label="kg" accent />
-        <PrimaryButton full className="mt-5" onClick={registrar}>Salvar {fmt(kg)} kg</PrimaryButton>
       </BottomSheet>
     </>
   )

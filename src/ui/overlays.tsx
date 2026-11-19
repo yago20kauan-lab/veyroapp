@@ -1,9 +1,37 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useDragControls } from 'framer-motion'
 import { useEffect, useState, type ReactNode } from 'react'
 import { create } from 'zustand'
 import { Ring } from './charts'
 
-export function BottomSheet({ open, onClose, title, children }: { open: boolean; onClose: () => void; title?: string; children: ReactNode }) {
+/**
+ * Folha inferior.
+ * - Só a alça/título arrastam (no iPhone, drag no corpo inteiro bloqueava a rolagem).
+ * - O conteúdo rola por dentro; `footer` fica fixo embaixo (ex.: botão principal).
+ * - Trava a rolagem da página por trás enquanto está aberta.
+ */
+export function BottomSheet({
+  open,
+  onClose,
+  title,
+  children,
+  footer,
+}: {
+  open: boolean
+  onClose: () => void
+  title?: string
+  children: ReactNode
+  footer?: ReactNode
+}) {
+  const controls = useDragControls()
+  useEffect(() => {
+    if (!open) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [open])
+
   return (
     <AnimatePresence>
       {open && (
@@ -17,20 +45,39 @@ export function BottomSheet({ open, onClose, title, children }: { open: boolean;
           />
           <motion.div
             role="dialog"
+            aria-modal="true"
             aria-label={title}
-            className="pb-safe fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-[24px] border-t border-border bg-surface px-5 pt-3"
+            className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[88dvh] max-w-md flex-col rounded-t-[24px] border-t border-border bg-surface"
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 320 }}
+            transition={{ type: 'spring', damping: 32, stiffness: 340 }}
             drag="y"
+            dragListener={false}
+            dragControls={controls}
             dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={{ top: 0, bottom: 0.5 }}
-            onDragEnd={(_, i) => i.offset.y > 120 && onClose()}
+            dragElastic={{ top: 0, bottom: 0.6 }}
+            onDragEnd={(_, i) => (i.offset.y > 110 || i.velocity.y > 600) && onClose()}
           >
-            <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-border" />
-            {title && <h3 className="mb-4 font-display text-lg font-bold">{title}</h3>}
-            <div className="pb-6">{children}</div>
+            <div
+              className="shrink-0 cursor-grab touch-none px-5 pt-3"
+              onPointerDown={(e) => controls.start(e)}
+            >
+              <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-border" />
+              {title && <h3 className="pb-3 font-display text-lg font-bold">{title}</h3>}
+            </div>
+            <div
+              className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-6"
+              style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}
+            >
+              {children}
+            </div>
+            {footer && (
+              <div className="pb-safe shrink-0 border-t border-border bg-surface px-5 pt-3">
+                <div className="pb-3">{footer}</div>
+              </div>
+            )}
+            {!footer && <div className="pb-safe shrink-0" />}
           </motion.div>
         </>
       )}
