@@ -61,7 +61,7 @@ export function Chip({ children, active, onClick }: { children: ReactNode; activ
         haptic('light')
         onClick?.()
       }}
-      className={`h-9 rounded-full px-4 text-sm font-medium transition ${
+      className={`h-9 shrink-0 whitespace-nowrap rounded-full px-4 text-sm font-medium transition ${
         active ? 'bg-lime text-onlime' : 'border border-border bg-surface2 text-text'
       }`}
     >

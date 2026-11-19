@@ -16,6 +16,12 @@ import Summary from './pages/Summary'
 import Onboarding from './pages/Onboarding'
 import Recuperacao from './pages/Recuperacao'
 import PlanEditor, { RoutineEditor } from './pages/PlanEditor'
+import Metas from './pages/diet/Metas'
+import PlanoAlimentar from './pages/diet/PlanoAlimentar'
+import Compras from './pages/diet/Compras'
+import Suplementos from './pages/diet/Suplementos'
+import Alimentos from './pages/diet/Alimentos'
+import Relatorio from './pages/diet/Relatorio'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
@@ -32,7 +38,7 @@ const tabs = [
   { to: '/progresso', label: 'Progresso', Icon: IconChart },
 ]
 
-const isFullScreen = (path: string) => path.startsWith('/treino/') || path.startsWith('/resumo/') || path.startsWith('/plano/')
+const isFullScreen = (path: string) => path.startsWith('/treino/') || path.startsWith('/resumo/') || path.startsWith('/plano/') || path === '/dieta/metas' || path === '/dieta/plano'
 
 function TabBar() {
   const loc = useLocation()
@@ -66,6 +72,8 @@ function Screens() {
       <Routes location={loc}>
         <Route path="/treino/:id" element={<Workout />} />
         <Route path="/resumo/:id" element={<Summary />} />
+        <Route path="/dieta/metas" element={<div className="pt-safe mx-auto max-w-md px-4"><Metas /></div>} />
+        <Route path="/dieta/plano" element={<div className="pt-safe mx-auto max-w-md px-4"><PlanoAlimentar /></div>} />
         <Route path="/plano/:id" element={<div className="pt-safe mx-auto max-w-md px-4"><RoutineEditor /></div>} />
       </Routes>
     )
@@ -89,7 +97,13 @@ function Screens() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/recuperacao" element={<Recuperacao />} />
           <Route path="/plano" element={<PlanEditor />} />
-          <Route path="/plano/:id" element={<RoutineEditor />} />
+          <Route path="/dieta/compras" element={<Compras />} />
+          <Route path="/dieta/suplementos" element={<Suplementos />} />
+          <Route path="/dieta/alimentos" element={<Alimentos />} />
+          <Route path="/dieta/relatorio" element={<Relatorio />} />
+          <Route path="/dieta/metas" element={<div className="pt-safe mx-auto max-w-md px-4"><Metas /></div>} />
+        <Route path="/dieta/plano" element={<div className="pt-safe mx-auto max-w-md px-4"><PlanoAlimentar /></div>} />
+        <Route path="/plano/:id" element={<RoutineEditor />} />
           <Route path="/_dev/ui" element={<DevUI />} />
         </Routes>
       </motion.main>

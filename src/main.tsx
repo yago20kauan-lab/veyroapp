@@ -10,7 +10,7 @@ import './index.css'
 import App from './App'
 import { seedGlobals } from './db/seed'
 
-seedGlobals().catch((e) => console.error('seed', e))
+seedGlobals().catch((e) => console.error('seed', e?.name, e?.message, e?.failures?.[0]?.message))
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

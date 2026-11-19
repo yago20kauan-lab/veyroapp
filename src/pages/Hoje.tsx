@@ -15,6 +15,8 @@ import { ReadinessSheet } from '../ui/ReadinessSheet'
 import { todayReadiness } from '../lib/readiness'
 import { readinessAdvice } from '../domain/readiness'
 import { useState } from 'react'
+import { save } from '../db/repo'
+import { dayLogs, latestTargets, plannedMeals, sumLogs, targetsFor, waterToday } from '../lib/diet'
 
 function greeting() {
   const h = new Date().getHours()
@@ -137,20 +139,8 @@ export default function Hoje() {
             <span className="text-xs text-muted">meta<br />8–10 mil</span>
           </div>
         </Card>
-        <Card>
-          <Label>Água</Label>
-          <div className="mt-2 flex items-center gap-3">
-            <Ring value={0} max={3250} size={52} stroke={6} color="#3DF2FF"><span className="num text-[11px] font-bold">0 L</span></Ring>
-            <span className="text-xs text-muted">em breve</span>
-          </div>
-        </Card>
-        <Card>
-          <Label>Dieta</Label>
-          <div className="mt-3 flex gap-1.5">
-            {[0, 1, 2, 3].map((i) => <span key={i} className="h-3 w-3 rounded-full border border-border bg-surface2" />)}
-          </div>
-          <div className="num mt-2 text-xs text-muted">em breve</div>
-        </Card>
+        <WaterCard />
+        <DietCard />
       </div>
     </>
   )
@@ -164,5 +154,41 @@ function LastWeight() {
       <div className="num mt-2 font-display text-3xl font-bold">{last ? last.kg.toFixed(1).replace('.', ',') : '—'}</div>
       <div className="mt-1 text-xs text-muted">{last ? 'kg · toque para registrar' : 'Toque para registrar'}</div>
     </>
+  )
+}
+
+function WaterCard() {
+  const uid = useSession((s) => s.user?.id)
+  const data = useLiveQuery(async () => ({ ml: await waterToday(), goal: (await latestTargets())?.waterMl ?? 3000 }), [uid])
+  const ml = data?.ml ?? 0
+  return (
+    <Card>
+      <Label>Água</Label>
+      <div className="mt-2 flex items-center gap-3">
+        <Ring value={ml} max={data?.goal ?? 3000} size={52} stroke={6} color="#3DF2FF"><span className="num text-[11px] font-bold">{(ml / 1000).toFixed(1).replace('.', ',')} L</span></Ring>
+        <button className="h-9 rounded-full border border-border px-3 text-xs" onClick={() => save('water', { date: localDate(), ml: 250 })}>+250 ml</button>
+      </div>
+    </Card>
+  )
+}
+
+function DietCard() {
+  const nav = useNavigate()
+  const uid = useSession((s) => s.user?.id)
+  const data = useLiveQuery(async () => {
+    const d = localDate()
+    const logs = await dayLogs(d)
+    const { meals } = await plannedMeals(d)
+    const done = new Set(logs.map((l) => l.mealName))
+    return { total: sumLogs(logs), meals: meals.map((m) => done.has(m.name)), t: (await targetsFor(d)).targets }
+  }, [uid])
+  return (
+    <Card onClick={() => nav('/dieta')}>
+      <Label>Dieta</Label>
+      <div className="mt-3 flex gap-1.5">
+        {(data?.meals.length ? data.meals : [false, false, false, false]).map((ok, i) => <span key={i} className={`h-3 w-3 rounded-full border ${ok ? 'border-lime bg-lime' : 'border-border bg-surface2'}`} />)}
+      </div>
+      <div className="num mt-2 text-xs text-muted">{Math.round(data?.total.kcal ?? 0)}{data?.t.kcal ? `/${data.t.kcal}` : ''} kcal · {Math.round(data?.total.p ?? 0)} g P</div>
+    </Card>
   )
 }

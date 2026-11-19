@@ -143,6 +143,9 @@ export type Food = {
   swapGroup?: 'carb' | 'protein' | 'fruit' | 'fat' | 'veg' | 'dairy' | 'bread'
   section: 'hortifruti' | 'acougue' | 'mercearia' | 'laticinios' | 'padaria' | 'suplementos' | 'congelados'
   source: 'taco' | 'custom' | 'off' | 'seed'
+  category?: string
+  /** id do mesmo alimento cru (para a lista de compras) */
+  rawId?: string
   updated_at: string
   deleted_at?: string | null
 }
@@ -154,10 +157,17 @@ export type DietTargets = SyncFields & {
   version: number
   base: Macros
   mode: 'grams' | 'percent'
+  /** ciclo de carboidrato ligado: usa trainingDay/restDay */
+  cycle?: boolean
   trainingDay?: Macros
   restDay?: Macros
   waterMl: number
+  /** limite para a barra ficar vermelha (1.1 = 110%); 0 = sem aviso */
+  redAt?: number
   validFrom: string
+  /** ritmo desejado em kg/semana (negativo = perder) */
+  rateKgWeek?: number
+  tdeeEstimate?: number
 }
 export type PlanMeal = { name: string; time: string; items: MealItem[] }
 export type DietPlan = SyncFields & { id: string; version: number; name: string; validFrom: string; meals: PlanMeal[] }
@@ -165,7 +175,7 @@ export type PlannedDay = SyncFields & { id: string; date: string; meals: PlanMea
 export type FoodLog = SyncFields & { id: string; date: string; mealName: string; time?: string; foodId?: string; recipeId?: string; grams: number; macros: Macros; planned: boolean }
 export type DayNote = SyncFields & { id: string; date: string; text: string; isCheatMeal: boolean }
 export type Water = SyncFields & { id: string; date: string; ml: number }
-export type Supplement = SyncFields & { id: string; name: string; dose: number; unit: string; times: string[]; macros?: Macros }
+export type Supplement = SyncFields & { id: string; name: string; dose: number; unit: string; times: string[]; macros?: Macros; active?: boolean }
 export type SupplementLog = SyncFields & { id: string; supplementId: string; date: string; takenAt: string }
 export type ShoppingList = SyncFields & {
   id: string
