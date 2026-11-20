@@ -249,6 +249,20 @@ export default function Workout() {
 
               {note && <div className="mb-3 rounded-btn bg-surface2 px-3 py-2 text-xs text-muted">📌 {note}</div>}
 
+              {(item.warmup || item.feeder || item.technique || item.alt || item.pyramid || item.amrap) && (
+                <div className="mb-3 rounded-btn border border-lime/25 bg-lime/[0.05] px-3 py-2.5 text-sm">
+                  <div className="label mb-1 text-lime">Método do treino</div>
+                  <ul className="space-y-0.5">
+                    {item.warmup && <li><span className="text-muted">Aquecimento:</span> {item.warmup} <span className="text-muted">(~30% da carga, longe da falha)</span></li>}
+                    {item.feeder && <li><span className="text-muted">Ajuste:</span> {item.feeder} <span className="text-muted">(sem falhar)</span></li>}
+                    <li><span className="text-muted">Trabalho:</span> {item.amrap ? `${item.sets}× o máximo de repetições` : item.pyramid ? item.pyramid.map((r, i) => `${i + 1}ª ${r[0]}–${r[1]}`).join(' · ') : `${item.sets}× ${item.repMin}–${item.repMax} até a falha`}</li>
+                    {item.pyramid && done.length < item.pyramid.length && <li className="text-lime">Agora: {done.length + 1}ª série, {item.pyramid[done.length][0]}–{item.pyramid[done.length][1]} reps</li>}
+                    {item.technique && <li>{item.technique}</li>}
+                    {item.alt && <li className="text-muted">Alternativa: {item.alt}</li>}
+                  </ul>
+                </div>
+              )}
+
               {!isTime && !isCardio && (
                 <>
                   <Label>Alvo de hoje</Label>

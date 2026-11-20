@@ -15,13 +15,18 @@ import { useSession } from '../store/session'
 type Equip = 'academia' | 'halteres' | 'casa'
 type Pause = 'nao' | '2-4s' | '1-2m' | '3m+'
 
-function suggestProgram(days: number, pause: Pause, equip: Equip) {
-  if (equip !== 'academia') return 'casa-viagem'
-  if (pause !== 'nao' && days >= 5) return 'retorno-definicao-5x'
-  if (days <= 3) return 'full-body-3x'
-  if (days === 4) return 'upper-lower-4x'
-  if (days === 5) return 'abcde'
-  return 'abc-2x'
+type Exp = 'iniciante' | 'intermediario' | 'avancado'
+
+/** Sugestão entre os programas do treinador: nível, sexo e dias por semana. */
+export function suggestProgram(days: number, exp: Exp, sex: Sex) {
+  const f = sex === 'f'
+  if (exp === 'iniciante') {
+    if (days <= 3) return f ? 'mulheres-ab-2x' : 'iniciantes-ab-2x'
+    return f ? 'mulheres-ab-4x' : 'iniciantes-ab-4x'
+  }
+  if (exp === 'intermediario') return days <= 3 ? 'ppl-abc-intermediario' : 'abcd-intermediario'
+  if (f) return days <= 3 ? 'mulheres-abc-3x' : days === 4 ? 'upper-lower-feminino-4x' : days === 5 ? 'abcde-inferiores' : 'abcdef-6x'
+  return days <= 3 ? 'ppl-abc-3x' : days === 4 ? 'abcd-avancado' : days === 5 ? 'abcde-superiores' : 'ppl-abc-def-6x'
 }
 
 const goalLabel: Record<Goal, string> = { cut: 'Definição', maintain: 'Manutenção', bulk: 'Ganho de massa' }
@@ -41,12 +46,13 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
   const [time, setTime] = useState('19:30')
   const [equip, setEquip] = useState<Equip>('academia')
   const [pause, setPause] = useState<Pause>('nao')
+  const [exp, setExp] = useState<Exp>('intermediario')
   const [activity, setActivity] = useState<Activity>('moderado')
   const [programId, setProgramId] = useState<string | null>(null)
   const [start, setStart] = useState<'hoje' | 'segunda'>('hoje')
   const [busy, setBusy] = useState(false)
 
-  const suggested = suggestProgram(days, pause, equip)
+  const suggested = suggestProgram(days, exp, sex)
   const chosen = programId ?? suggested
   const calc = useMemo(() => calcTargets({ sex, weightKg: weight, heightCm: height, age: ageOf(birth), activity, goal }), [sex, weight, height, birth, activity, goal])
 
@@ -83,7 +89,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
       } as unknown as DietTargets)
       if (!hasPlan) {
         const prog = seedPrograms.find((x) => x.id === chosen)
-        if (prog) await activateProgram(prog, start === 'hoje' ? localDate() : nextMonday(), {})
+        if (prog) await activateProgram(prog, start === 'hoje' ? localDate() : nextMonday(), {}, pause !== 'nao' && pause !== '2-4s')
       }
       onDone()
     } finally {
@@ -134,8 +140,14 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
             <>
               <h1 className="mb-1 font-display text-2xl font-bold">Sua rotina</h1>
               <p className="mb-6 text-sm text-muted">Para montar o treino certo e lembrar na hora certa.</p>
+              <Label className="mb-2">Experiência com musculação</Label>
+              <div className="mb-5 flex flex-wrap gap-2">
+                <Chip active={exp === 'iniciante'} onClick={() => setExp('iniciante')}>Iniciante</Chip>
+                <Chip active={exp === 'intermediario'} onClick={() => setExp('intermediario')}>Intermediário</Chip>
+                <Chip active={exp === 'avancado'} onClick={() => setExp('avancado')}>Avançado</Chip>
+              </div>
               <Label className="mb-2">Dias de treino por semana</Label>
-              <div className="mb-5 flex flex-wrap gap-2">{[3, 4, 5, 6].map((d) => <Chip key={d} active={days === d} onClick={() => setDays(d)}>{d} dias</Chip>)}</div>
+              <div className="mb-5 flex flex-wrap gap-2">{[2, 3, 4, 5, 6].map((d) => <Chip key={d} active={days === d} onClick={() => setDays(d)}>{d} dias</Chip>)}</div>
               <Label className="mb-1.5">Horário do treino</Label>
               <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="mb-5 h-[52px] w-full rounded-btn border border-border bg-surface2 px-4 text-base text-text outline-none [color-scheme:dark]" />
               <Label className="mb-2">Onde treina</Label>
@@ -165,7 +177,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
               <h1 className="mb-1 font-display text-2xl font-bold">Seu treino</h1>
               <p className="mb-5 text-sm text-muted">Sugerimos um programa pelo que você contou. Tudo editável depois.</p>
               <div className="flex flex-col gap-2">
-                {seedPrograms.map((p) => (
+                {[...seedPrograms].filter((p) => p.audience !== (sex === 'm' ? 'feminino' : 'masculino')).sort((a, b) => Number(b.id === suggested) - Number(a.id === suggested)).map((p) => (
                   <button key={p.id} onClick={() => setProgramId(p.id)} className={`rounded-card border p-4 text-left ${chosen === p.id ? 'border-lime bg-lime/[0.06]' : 'border-border bg-surface'}`}>
                     <div className="flex items-center justify-between">
                       <span className="font-semibold">{p.name}</span>
@@ -176,6 +188,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
                   </button>
                 ))}
               </div>
+              {pause !== 'nao' && pause !== '2-4s' && <p className="mt-4 rounded-btn border border-lime/30 bg-lime/5 px-3 py-2 text-sm">Como você está voltando de uma pausa, as 4 primeiras semanas serão de retorno gradual (55% → 90% das cargas).</p>}
               <Label className="mb-2 mt-5">Começar</Label>
               <div className="flex gap-2">
                 <Chip active={start === 'hoje'} onClick={() => setStart('hoje')}>Hoje</Chip>

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db, type Program, type Routine } from '../db/schema'
+import { db, type Program, type Routine, type RoutineItem } from '../db/schema'
 import { mine } from '../db/repo'
 import { Header } from '../ui/Header'
 import { Card, Chip, Label, PrimaryButton, SectionTitle } from '../ui/primitives'
@@ -16,6 +16,10 @@ import { useSession } from '../store/session'
 const order = new Map(seedPrograms.map((p, i) => [p.id, i]))
 const levelLabel = { iniciante: 'Iniciante', intermediario: 'Intermediário', avancado: 'Avançado' } as const
 const weekdays = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB']
+export const setsLabel = (it: RoutineItem) =>
+  it.minutes ? `${it.minutes} min` : it.seconds ? `${it.sets}×${it.seconds}s` : it.amrap ? `${it.sets}× máx.` : it.pyramid ? it.pyramid.map((p) => `${p[0]}–${p[1]}`).join(' / ') : `${it.sets}×${it.repMin === it.repMax ? it.repMin : `${it.repMin}–${it.repMax}`}`
+export const methodLine = (it: RoutineItem) =>
+  [it.warmup && `Aquec. ${it.warmup}`, it.feeder && `Ajuste ${it.feeder}`, it.technique, it.alt].filter(Boolean).join(' · ')
 const fmtDate = (iso: string) => new Date(iso + 'T12:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
 
 export default function Treinar() {
@@ -26,6 +30,9 @@ export default function Treinar() {
   const plan = useLiveQuery(() => todayPlan(), [uid])
   const routines = useLiveQuery(async () => mine(await db.routines.toArray()) as Routine[], [uid])
   const [open, setOpen] = useState<Program | null>(null)
+  const [fLevel, setFLevel] = useState<Program['level'] | null>(null)
+  const [fDays, setFDays] = useState<number | null>(null)
+  const [fAud, setFAud] = useState<'masculino' | 'feminino' | null>(null)
   const [activating, setActivating] = useState<Program | null>(null)
   const toast = useToast((s) => s.show)
   const exName = new Map(exercises?.map((e) => [e.id, e.name]))
@@ -83,11 +90,19 @@ export default function Treinar() {
       )}
 
       <SectionTitle kicker="Programas prontos" title={active ? 'Trocar de programa' : 'Escolha um ponto de partida'} />
+      <div className="no-scrollbar -mx-4 mb-2 flex gap-2 overflow-x-auto px-4">
+        {(['iniciante', 'intermediario', 'avancado'] as const).map((l) => <Chip key={l} active={fLevel === l} onClick={() => setFLevel(fLevel === l ? null : l)}>{levelLabel[l]}</Chip>)}
+        <Chip active={fAud === 'feminino'} onClick={() => setFAud(fAud === 'feminino' ? null : 'feminino')}>Feminino</Chip>
+        <Chip active={fAud === 'masculino'} onClick={() => setFAud(fAud === 'masculino' ? null : 'masculino')}>Masculino</Chip>
+      </div>
+      <div className="no-scrollbar -mx-4 mb-4 flex gap-2 overflow-x-auto px-4">
+        {[2, 3, 4, 5, 6].map((d) => <Chip key={d} active={fDays === d} onClick={() => setFDays(fDays === d ? null : d)}>{d}x/sem</Chip>)}
+      </div>
       {!programs ? (
         <div className="py-16"><VeyroLoader label="Carregando" /></div>
       ) : (
         <div className="flex flex-col gap-3">
-          {programs.map((p) => (
+          {programs.filter((p) => (!fLevel || p.level === fLevel) && (!fDays || p.daysPerWeek === fDays) && (!fAud || p.audience === fAud || p.audience === 'todos' || !p.audience)).map((p) => (
             <Card key={p.id} onClick={() => setOpen(p)} className={active?.programId === p.id ? 'border-lime/50' : ''}>
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -96,8 +111,10 @@ export default function Treinar() {
                 </div>
                 <div className="num shrink-0 rounded-full bg-surface2 px-3 py-1 text-xs font-semibold">{p.daysPerWeek}x/sem</div>
               </div>
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 flex flex-wrap gap-2">
                 <span className="label">{levelLabel[p.level]}</span>
+                {p.split && <span className="label">· {p.split}</span>}
+                {p.audience && p.audience !== 'todos' && <span className="label">· {p.audience}</span>}
                 {p.phases && <span className="label text-lime">· com fase de retorno</span>}
                 {active?.programId === p.id && <span className="label text-lime">· ativo</span>}
               </div>
@@ -121,7 +138,13 @@ export default function Treinar() {
       >
         {open && (
           <>
-            <p className="mb-4 text-sm text-muted">{open.description}</p>
+            <p className="mb-3 text-sm text-muted">{open.description}</p>
+            {open.tips?.length ? (
+              <details className="mb-4 rounded-btn border border-border bg-surface2 px-3 py-2 text-sm">
+                <summary className="cursor-pointer font-semibold">Como fazer as séries</summary>
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-muted">{open.tips.map((t) => <li key={t}>{t}</li>)}</ul>
+              </details>
+            ) : null}
             {open.phases && (
               <div className="mb-4 flex flex-wrap gap-2">
                 {open.phases[0].rules.map((r) => <Chip key={r.week}>Sem {r.week}: {Math.round(r.pct * 100)}%</Chip>)}
@@ -135,13 +158,15 @@ export default function Treinar() {
                     <span className="font-semibold">{r.name}</span>
                     {r.fromWeek && r.fromWeek > 1 && <span className="label">· semana {r.fromWeek}+</span>}
                   </div>
+                  {r.note && <p className="mb-2 text-xs text-muted">{r.note}</p>}
                   <ul className="space-y-1 text-sm text-muted">
                     {r.items.map((it, j) => (
-                      <li key={j} className="flex justify-between gap-2">
-                        <span>{exName.get(it.exerciseId) ?? it.exerciseId}</span>
-                        <span className="num shrink-0">
-                          {it.minutes ? `${it.minutes} min` : it.seconds ? `${it.sets}×${it.seconds}s` : `${it.sets}×${it.repMin === it.repMax ? it.repMin : `${it.repMin}–${it.repMax}`}`}
-                        </span>
+                      <li key={j}>
+                        <div className="flex justify-between gap-2">
+                          <span className="text-text">{exName.get(it.exerciseId) ?? it.exerciseId}</span>
+                          <span className="num shrink-0">{setsLabel(it)}</span>
+                        </div>
+                        {(it.warmup || it.feeder || it.technique || it.alt) && <div className="text-[11px] leading-snug">{methodLine(it)}</div>}
                       </li>
                     ))}
                   </ul>
@@ -162,9 +187,10 @@ function ActivateSheet({ program, hasActive, onClose, onDone }: { program: Progr
   const [start, setStart] = useState<'hoje' | 'segunda'>('segunda')
   const [loads, setLoads] = useState<Record<string, string>>({})
   const [busy, setBusy] = useState(false)
+  const [ret, setRet] = useState(false)
   const today = localDate()
   const monday = nextMonday()
-  const isReturn = !!program?.phases?.some((p) => p.type === 'return')
+  const isReturn = ret || !!program?.phases?.some((p) => p.type === 'return')
   const loadExercises = useMemo(() => {
     if (!program || !exercises) return []
     const map = new Map(exercises.map((e) => [e.id, e]))
@@ -180,7 +206,7 @@ function ActivateSheet({ program, hasActive, onClose, onDone }: { program: Progr
       const n = parseFloat(v.replace(',', '.'))
       if (!Number.isNaN(n) && n > 0) parsed[k] = n
     }
-    await activateProgram(program, start === 'hoje' ? today : monday, parsed)
+    await activateProgram(program, start === 'hoje' ? today : monday, parsed, ret)
     setBusy(false)
     onDone()
   }
@@ -192,6 +218,11 @@ function ActivateSheet({ program, hasActive, onClose, onDone }: { program: Progr
       <div className="mb-5 flex flex-wrap gap-2">
         <Chip active={start === 'hoje'} onClick={() => setStart('hoje')}>Hoje ({fmtDate(today)})</Chip>
         {monday !== today && <Chip active={start === 'segunda'} onClick={() => setStart('segunda')}>Segunda ({fmtDate(monday)})</Chip>}
+      </div>
+      <Label className="mb-2">Está voltando de uma pausa?</Label>
+      <div className="mb-5 flex flex-wrap gap-2">
+        <Chip active={!ret} onClick={() => setRet(false)}>Não</Chip>
+        <Chip active={ret} onClick={() => setRet(true)}>Sim, começar com 4 semanas de retorno</Chip>
       </div>
       {isReturn && (
         <>

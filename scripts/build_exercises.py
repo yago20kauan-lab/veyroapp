@@ -17,7 +17,7 @@ SAME = {39: 'supino-reto-barra', 40: 'rosca-direta', 42: 'terra', 47: 'elevacao-
         548: 'barra-fixa', 556: 'flexao', 576: 'abdominal-infra', 582: 'crucifixo-inverso', 590: 'terra-romeno', 611: 'remada-baixa', 613: 'panturrilha-sentado',
         629: 'cadeira-flexora', 650: 'elevacao-lateral', 716: 'agachamento-bulgaro', 723: 'escada', 729: 'rosca-polia', 735: 'panturrilha-pe', 741: 'triceps-frances',
         753: 'elevacao-lateral-polia', 773: 'stiff-barra', 774: 'stiff-halteres', 778: 'pulldown-braco-reto', 798: 'abdutora', 807: 'triceps-barra-polia',
-        808: 'triceps-corda', 827: 'caminhada', 840: 'puxada-frente'}
+        808: 'triceps-corda', 827: 'caminhada', 840: 'puxada-frente', 824: 'puxada-triangulo', 564: 'meio-terra'}
 
 MUSCLE = {'quadriceps': 'quadriceps', 'shoulders': 'ombros', 'abdominals': 'abdomen', 'chest': 'peito', 'hamstrings': 'posterior', 'triceps': 'triceps',
           'biceps': 'biceps', 'lats': 'costas', 'middle back': 'costas', 'calves': 'panturrilha', 'lower back': 'costas', 'forearms': 'antebraco',

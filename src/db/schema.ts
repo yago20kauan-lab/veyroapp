@@ -29,6 +29,10 @@ export type Exercise = {
   videoUrl?: string
   /** Biblioteca ampliada (Free Exercise DB, domínio público) */
   nameEn?: string
+  /** outros nomes usados na academia (busca) */
+  aka?: string
+  /** copiar as fotos de outro exercício da biblioteca */
+  imagesFrom?: string
   images?: string[]
   instructionsEn?: string[]
   level?: string
@@ -72,6 +76,15 @@ export type RoutineItem = {
   supersetGroup?: string
   seconds?: number
   minutes?: number
+  /** Método do treinador */
+  warmup?: string
+  feeder?: string
+  technique?: string
+  alt?: string
+  /** faixa de repetições por série (progressão de carga) */
+  pyramid?: [number, number][]
+  /** máximo de repetições possíveis */
+  amrap?: boolean
 }
 export type Routine = SyncFields & {
   id: string
@@ -84,6 +97,7 @@ export type Routine = SyncFields & {
   /** semana do plano a partir da qual esta rotina vale (troca de divisão) */
   fromWeek?: number
   programId?: string
+  note?: string
 }
 export type Phase = SyncFields & {
   id: string
@@ -210,8 +224,11 @@ export type Program = {
   daysPerWeek: number
   description: string
   forWho: string
+  audience?: 'todos' | 'masculino' | 'feminino'
+  split?: string
+  tips?: string[]
   phases?: Omit<Phase, keyof SyncFields | 'id' | 'startDate'>[]
-  routines: { name: string; weekday?: number; items: RoutineItem[]; fromWeek?: number }[]
+  routines: { name: string; weekday?: number; items: RoutineItem[]; fromWeek?: number; note?: string }[]
 }
 /** Fila de saída da sincronização (A6.5). */
 export type Outbox = { id?: number; table: string; rowId: string; op: 'upsert' | 'delete'; at: string }

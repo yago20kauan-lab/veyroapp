@@ -177,7 +177,7 @@
 176|Afundo reverso cruzado
 177|Abdominal com mãos acima da cabeça
 178|Abdominal com pernas na bola
-179|Abdominal (crunch)
+179|Abdominal supra (crunch)
 180|Desenvolvimento cubano
 181|Alongamento da bailarina
 182|Dead bug
@@ -185,7 +185,7 @@
 184|Levantamento terra com correntes
 185|Supino declinado com barra
 186|Supino declinado fechado com tríceps testa
-187|Abdominal declinado
+187|Abdominal supra declinado (prancha declinada)
 188|Supino declinado com halteres
 189|Crucifixo declinado com halteres
 190|Tríceps testa declinado com halteres
@@ -378,7 +378,7 @@
 377|Muscle-up com kipping
 378|Joelho cruzando o corpo
 379|Círculos com os joelhos
-380|Elevação de joelhos nas paralelas
+380|Abdominal infra na torre (elevação de joelhos)
 381|Salto grupado
 382|Movimento de braços ajoelhado
 383|Abdominal ajoelhado na polia com rotação

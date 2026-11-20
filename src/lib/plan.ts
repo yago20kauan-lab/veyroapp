@@ -1,3 +1,4 @@
+import { RETURN_PHASES } from '../db/seed-programs'
 import { db, type Phase, type Profile, type Program, type Routine } from '../db/schema'
 import { mine, remove, save } from '../db/repo'
 import { currentUserId, useSession } from '../store/session'
@@ -24,7 +25,8 @@ export async function updateSettings(patch: Partial<Profile['settings']>) {
 }
 
 /** Ativa um programa pronto: copia rotinas e fases para o usuário (tudo editável depois). */
-export async function activateProgram(program: Program, startDate: string, oldLoads: Record<string, number>) {
+export async function activateProgram(program: Program, startDate: string, oldLoads: Record<string, number>, withReturn = false) {
+  if (withReturn && !program.phases?.some((p) => p.type === 'return')) program = { ...program, phases: RETURN_PHASES }
   const uid = currentUserId()
   // desativa o plano anterior (exclusão lógica: o histórico de treinos continua)
   for (const r of mine(await db.routines.toArray())) await remove('routines', r.id)
@@ -43,6 +45,7 @@ export async function activateProgram(program: Program, startDate: string, oldLo
       items: r.items.map((i) => ({ ...i })),
       planVersion: 1,
       programId: program.id,
+      note: r.note,
     } as unknown as Routine)
   }
   const p = await ensureProfile()

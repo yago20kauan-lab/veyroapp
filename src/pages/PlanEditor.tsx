@@ -172,6 +172,8 @@ export function RoutineEditor() {
                       ))}
                     </div>
                   </div>
+                  {(it.warmup || it.feeder) && <div className="col-span-2 text-[11px] text-muted">{[it.warmup && `Aquecimento ${it.warmup}`, it.feeder && `Ajuste ${it.feeder}`].filter(Boolean).join(' · ')}</div>}
+                  <input value={it.technique ?? ''} onChange={(ev) => setItem(i, { technique: ev.target.value || undefined })} placeholder="Técnica (ex.: drop set na última, rest-pause…)" className="col-span-2 h-9 rounded-[10px] border border-border bg-surface2 px-3 text-xs outline-none focus:border-lime" />
                 </div>
               )}
             </Card>
@@ -222,7 +224,7 @@ export function ExercisePicker({ open, onClose, exercises, onPick }: { open: boo
     const rank = (e: Exercise) => (e.user_id ? 0 : !e.id.startsWith('fx-') ? 1 : e.category === 'stretching' || e.category === 'plyometrics' ? 3 : 2)
     return exercises
       .filter((e) => !e.deleted_at && (e.user_id === null || e.user_id === uid) && (!m || e.primaryMuscle === m) && (!eq || e.equipment === eq) && (!tp || typeOf(e) === tp))
-      .filter((e) => { if (!toks.length) return true; const h = norm(e.name + ' ' + (e.nameEn ?? '')); return toks.every((t) => h.includes(t)) })
+      .filter((e) => { if (!toks.length) return true; const h = norm(e.name + ' ' + (e.nameEn ?? '') + ' ' + (e.aka ?? '')); return toks.every((t) => h.includes(t)) })
       .sort((a, b) => (nq ? Number(!norm(b.name).startsWith(nq)) - Number(!norm(a.name).startsWith(nq)) : 0) * -1 || rank(a) - rank(b) || a.name.localeCompare(b.name, 'pt'))
   }, [exercises, q, m, eq, tp, uid])
   useEffect(() => setLimit(60), [q, m, eq, tp])
