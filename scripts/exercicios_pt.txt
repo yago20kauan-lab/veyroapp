@@ -1,0 +1,855 @@
+0|Abdominal 3/4
+1|Alongamento posterior 90/90
+2|Abdominal na máquina
+3|Roda abdominal
+4|Liberação miofascial do adutor
+5|Alongamento de adutor e virilha
+6|Moinho com kettlebell avançado
+7|Abdominal bicicleta
+8|Alongamento de quadríceps em quatro apoios
+9|Rosca martelo alternada
+10|Toque no calcanhar alternado
+11|Rosca alternada no banco inclinado
+12|Salto diagonal alternado
+13|Desenvolvimento alternado na polia
+14|Elevação de deltoide alternada
+15|Supino no chão alternado com kettlebell
+16|Hang clean alternado com kettlebell
+17|Desenvolvimento alternado com kettlebell
+18|Remada alternada com kettlebell
+19|Remada renegada alternada
+20|Círculos com o tornozelo
+21|Alongamento tornozelo sobre o joelho
+22|Liberação miofascial do tibial anterior
+23|Desenvolvimento antigravidade
+24|Círculos com os braços
+25|Desenvolvimento Arnold
+26|Volta ao mundo com halteres
+27|Crucifixo inverso com elástico
+28|Arremesso de medicine ball para trás
+29|Prancha de equilíbrio
+30|Flexão de joelho na bola
+31|Barra fixa assistida com elástico
+32|Bom-dia com elástico
+33|Bom-dia com elástico (pull through)
+34|Adução de quadril com elástico
+35|Abertura com elástico (pull apart)
+36|Tríceps testa com elástico
+37|Rollout com barra
+38|Rollout com barra de joelhos
+39|Supino reto com barra
+40|Rosca direta com barra
+41|Rosca com barra deitado no banco inclinado
+42|Levantamento terra
+43|Agachamento completo com barra
+44|Ponte de glúteo com barra
+45|Supino guilhotina com barra
+46|Agachamento hack com barra
+47|Elevação pélvica com barra
+48|Supino inclinado com barra
+49|Elevação de ombro no banco inclinado com barra
+50|Afundo com barra
+51|Remada para deltoide posterior com barra
+52|Rollout com barra a partir do banco
+53|Panturrilha sentado com barra
+54|Desenvolvimento com barra
+55|Encolhimento com barra
+56|Encolhimento com barra por trás
+57|Flexão lateral com barra
+58|Agachamento lateral com barra
+59|Agachamento livre
+60|Agachamento com barra até o banco
+61|Subida no banco com barra
+62|Afundo andando com barra
+63|Corda naval
+64|Alongamento de peito com mãos atrás da cabeça
+65|Tríceps banco (mergulho no banco)
+66|Salto sobre o banco
+67|Supino reto (powerlifting)
+68|Supino com elástico
+69|Supino com correntes
+70|Corrida no banco (step sprint)
+71|Pullover com barra (braço flexionado)
+72|Pullover com halter
+73|Elevação de quadril com joelhos flexionados
+74|Remada curvada com barra
+75|Crucifixo inverso com cabeça apoiada no banco
+76|Elevação lateral curvado na polia baixa
+77|Remada cavalinho unilateral
+78|Remada cavalinho
+79|Remada curvada com halteres
+80|Remada curvada com halteres pegada neutra
+81|Bent press com kettlebell
+82|Ciclismo
+83|Bicicleta ergométrica
+84|Supino com board (board press)
+85|Body-up (extensão de tríceps no chão)
+86|Tríceps com peso corporal
+87|Crucifixo com peso corporal
+88|Remada com peso corporal
+89|Agachamento livre sem peso
+90|Afundo andando sem peso
+91|Abdominal na polia no bosu com flexão lateral
+92|Clean bottoms-up com kettlebell
+93|Bottoms up (elevação de quadril deitado)
+94|Saltos na caixa (múltiplos)
+95|Skip na caixa
+96|Agachamento no box
+97|Agachamento no box com elástico
+98|Agachamento no box com correntes
+99|Liberação miofascial do braquial
+100|Desenvolvimento Bradford
+101|Butt-ups (elevação de quadril em prancha)
+102|Ponte de glúteo
+103|Crucifixo na máquina (peck deck)
+104|Supino na polia
+105|Crossover na polia
+106|Abdominal na polia
+107|Levantamento terra na polia
+108|Rosca martelo na polia com corda
+109|Adução de quadril na polia
+110|Pulldown na polia no banco inclinado
+111|Tríceps na polia no banco inclinado
+112|Rotação interna na polia
+113|Cruz de ferro na polia
+114|Judo flip na polia
+115|Tríceps testa na polia
+116|Tríceps unilateral na polia
+117|Rosca Scott na polia
+118|Crucifixo inverso na polia
+119|Abdominal reverso na polia
+120|Tríceps francês na polia com corda
+121|Remada alta para deltoide posterior com corda
+122|Rotação russa na polia
+123|Abdominal sentado na polia
+124|Elevação lateral sentado na polia
+125|Desenvolvimento na polia
+126|Encolhimento na polia
+127|Rosca de punho na polia
+128|Encolhimento na máquina de panturrilha
+129|Panturrilha na máquina (calf press)
+130|Panturrilha no leg press
+131|Panturrilha em cima do halter
+132|Panturrilha com elástico
+133|Alongamento de panturrilha com cotovelos na parede
+134|Alongamento de panturrilha com mãos na parede
+135|Liberação miofascial da panturrilha
+136|Volante com anilha (car drivers)
+137|Passo cruzado rápido (carioca)
+138|Alongamento do gato
+139|Pegar e arremessar acima da cabeça
+140|Extensão de tríceps com correntes
+141|Supino com correntes (chain press)
+142|Alongamento de posterior na cadeira
+143|Alongamento de lombar na cadeira
+144|Agachamento na cadeira
+145|Alongamento de tronco na cadeira
+146|Alongamento de peito e ombro anterior
+147|Arremesso de peito a partir de 3 apoios
+148|Arremesso de peito (múltiplos)
+149|Arremesso de peito (único)
+150|Arremesso de peito com corrida
+151|Alongamento de peito na bola suíça
+152|Postura da criança
+153|Barra fixa supinada (chin-up)
+154|Alongamento queixo no peito
+155|Clean (arremesso)
+156|Levantamento terra de clean
+157|Puxada de clean
+158|Encolhimento de clean
+159|Arremesso (clean and jerk)
+160|Clean e desenvolvimento
+161|Clean a partir dos blocos
+162|Flexão relógio
+163|Supino pegada fechada
+164|Supino fechado com halteres
+165|Rosca fechada com barra W e elástico
+166|Supino fechado com barra W
+167|Rosca fechada com barra W
+168|Puxada frente pegada fechada
+169|Flexão fechada apoiada no halter
+170|Rosca direta pegada fechada
+171|Casulo (abdominal)
+172|Rosca concentrada
+173|Abdominal cruzado
+174|Rosca martelo cruzada
+175|Crossover com elástico
+176|Afundo reverso cruzado
+177|Abdominal com mãos acima da cabeça
+178|Abdominal com pernas na bola
+179|Abdominal (crunch)
+180|Desenvolvimento cubano
+181|Alongamento da bailarina
+182|Dead bug
+183|Levantamento terra com elástico
+184|Levantamento terra com correntes
+185|Supino declinado com barra
+186|Supino declinado fechado com tríceps testa
+187|Abdominal declinado
+188|Supino declinado com halteres
+189|Crucifixo declinado com halteres
+190|Tríceps testa declinado com halteres
+191|Tríceps testa declinado com barra W
+192|Abdominal oblíquo declinado
+193|Flexão declinada
+194|Abdominal reverso declinado
+195|Supino declinado no Smith
+196|Levantamento terra com déficit
+197|Salto em profundidade
+198|Tríceps na máquina de mergulho
+199|Paralelas (mergulho)
+200|Paralelas para tríceps
+201|Panturrilha burrinho
+202|Hang clean alternado com dois kettlebells
+203|Jerk com dois kettlebells
+204|Push press com dois kettlebells
+205|Snatch com dois kettlebells
+206|Moinho com dois kettlebells
+207|Chute no glúteo com as duas pernas
+208|Equilíbrio na bola de bruços
+209|Rosca arrastada (drag curl)
+210|Flexão com queda (drop push)
+211|Rosca alternada com halteres
+212|Supino reto com halteres
+213|Supino com halteres pegada neutra
+214|Rosca com halteres
+215|Clean com halteres
+216|Supino no chão com halteres
+217|Crucifixo com halteres
+218|Remada no banco inclinado com halteres
+219|Elevação de ombro no banco inclinado com halteres
+220|Afundo com halteres
+221|Crucifixo inverso unilateral deitado
+222|Pronação deitado com halter
+223|Crucifixo inverso deitado com halteres
+224|Supinação deitado com halter
+225|Desenvolvimento unilateral com halter
+226|Tríceps unilateral com halter
+227|Remada alta unilateral com halter
+228|Rosca deitado no banco inclinado
+229|Elevação com halteres
+230|Afundo para trás com halteres
+231|Elevação em Y (scaption)
+232|Salto na caixa sentado com halteres
+233|Panturrilha sentado unilateral com halter
+234|Desenvolvimento com halteres
+235|Encolhimento com halteres
+236|Flexão lateral com halter
+237|Agachamento com halteres
+238|Agachamento com halteres até o banco
+239|Subida no banco com halteres
+240|Tríceps com halteres pegada pronada
+241|Alongamento dinâmico de costas
+242|Alongamento dinâmico de peito
+243|Rosca com barra W
+244|Tríceps testa com barra W
+245|Círculos com os cotovelos
+246|Cotovelo no joelho
+247|Cotovelos para trás
+248|Afundo para trás elevado
+249|Remada na polia alta
+250|Elíptico (transport)
+251|Abdominal na bola suíça
+252|Recolhimento na bola suíça
+253|Supino no chão unilateral com kettlebell (amplitude estendida)
+254|Rotação externa com halter
+255|Rotação externa com elástico
+256|Rotação externa na polia
+257|Face pull
+258|Skip rápido
+259|Rosca de dedos com barra
+260|Crucifixo na polia no banco reto
+261|Recolhimento de pernas no banco
+262|Elevação de pernas deitado no banco
+263|Rosca no banco inclinado com flexão de punho
+264|Flexão nórdica no chão
+265|Supino no chão (floor press)
+266|Supino no chão com correntes
+267|Tesoura (flutter kicks)
+268|Liberação miofascial do pé
+269|Agachamento Frankenstein
+270|Agachamento com salto
+271|Saltos de sapo
+272|Abdominal sapo
+273|Agachamento frontal com barra
+274|Agachamento frontal até o banco
+275|Salto frontal na caixa
+276|Elevação frontal na polia
+277|Saltos sobre cones
+278|Elevação frontal com halteres
+279|Elevação frontal no banco inclinado
+280|Elevação de pernas à frente
+281|Elevação frontal com anilha
+282|Elevação frontal e pullover
+283|Agachamento frontal (pegada de clean)
+284|Agachamento frontal com dois kettlebells
+285|Elevação frontal com dois halteres
+286|Puxada frente amplitude completa
+287|Barra Gironda (ao esterno)
+288|Glute-ham raise
+289|Coice de glúteo
+290|Agachamento goblet
+291|Bom-dia com barra
+292|Bom-dia a partir dos pinos
+293|Barra com abdominal (gorilla chin)
+294|Alongamento de virilha e costas
+295|Groiners
+296|Agachamento hack
+297|Rosca martelo
+298|Supino inclinado com halteres pegada martelo
+299|Liberação miofascial do posterior
+300|Alongamento de posterior de coxa
+301|Flexão em parada de mão
+302|Hang clean
+303|Hang clean abaixo dos joelhos
+304|Hang snatch
+305|Hang snatch abaixo dos joelhos
+306|Bom-dia com barra suspensa
+307|Elevação de pernas na barra
+308|Elevação de pernas carpada na barra
+309|Snatch balance
+310|Empurrão no saco de pancada
+311|Rosca na polia alta (duplo bíceps)
+312|Círculos de quadril deitado
+313|Extensão de quadril com elástico
+314|Flexão de quadril com elástico
+315|Elevação de quadril com elástico
+316|Abraço na bola
+317|Abraçar joelhos no peito
+318|Saltos sobre barreiras
+319|Hiperextensão lombar (banco romano)
+320|Hiperextensão lombar sem banco
+321|Alongamento de trato iliotibial e glúteo
+322|Liberação miofascial do trato iliotibial
+323|Lagarta (inchworm)
+324|Tríceps testa no banco inclinado com barra
+325|Remada deitado no banco inclinado
+326|Supino inclinado na polia
+327|Crucifixo inclinado na polia
+328|Supino inclinado com halteres pegada neutra
+329|Rosca no banco inclinado
+330|Crucifixo inclinado com halteres
+331|Crucifixo inclinado com halteres com giro
+332|Supino inclinado com halteres
+333|Rosca martelo no banco inclinado
+334|Rosca aberta no banco inclinado
+335|Flexão inclinada
+336|Flexão inclinada pegada fechada
+337|Flexão inclinada com salto
+338|Flexão inclinada pegada média
+339|Flexão inclinada pegada invertida
+340|Flexão inclinada pegada aberta
+341|Alongamento de virilha intermediário
+342|Alongamento de flexor do quadril e quadríceps
+343|Rotação interna com elástico
+344|Remada invertida
+345|Remada invertida com fitas (TRX)
+346|Cruz de ferro com halteres
+347|Cruz de ferro (alongamento)
+348|Contração isométrica de peito
+349|Isometria de pescoço frente e trás
+350|Isometria de pescoço lateral
+351|Limpador isométrico
+352|JM press
+353|Abdominal canivete
+354|Abdominal Janda
+355|Agachamento Jefferson
+356|Equilíbrio de jerk
+357|Agachamento de impulso de jerk
+358|Trote na esteira
+359|Desenvolvimento Arnold com kettlebell
+360|Dead clean com kettlebell
+361|Oito com kettlebell
+362|Halo com kettlebell
+363|Halo com kettlebell e extensão acima da cabeça
+364|Hang clean com kettlebell
+365|Levantamento terra unilateral com kettlebell
+366|Tríceps francês com kettlebell
+367|Passagem de kettlebell entre as pernas
+368|Navio pirata com kettlebell
+369|Agachamento pistol com kettlebell
+370|Desenvolvimento sentado com kettlebell
+371|Desenvolvimento gangorra com kettlebell
+372|Remada alta sumô com kettlebell
+373|Thruster com kettlebell
+374|Levantamento turco com kettlebell (afundo)
+375|Levantamento turco com kettlebell (agachamento)
+376|Moinho com kettlebell
+377|Muscle-up com kipping
+378|Joelho cruzando o corpo
+379|Círculos com os joelhos
+380|Elevação de joelhos nas paralelas
+381|Salto grupado
+382|Movimento de braços ajoelhado
+383|Abdominal ajoelhado na polia com rotação
+384|Tríceps ajoelhado na polia
+385|Alongamento de antebraço ajoelhado
+386|Remada ajoelhado na polia alta
+387|Alongamento de flexor do quadril ajoelhado
+388|Agachamento com salto ajoelhado
+389|Remada unilateral ajoelhado na polia alta
+390|Agachamento ajoelhado
+391|Landmine 180 (rotação)
+392|Landmine jammer
+393|Salto lateral
+394|Salto lateral na caixa
+395|Saltos laterais sobre cones
+396|Elevação lateral com elástico
+397|Liberação miofascial do grande dorsal
+398|Supino no chão com perna cruzada (kettlebell)
+399|Alongamento de posterior com perna elevada
+400|Cadeira extensora
+401|Elevação de perna
+402|Leg press
+403|Recolhimento de pernas
+404|Supino articulado
+405|Levantamento terra articulado
+406|Supino declinado articulado
+407|Remada alta articulada
+408|Supino inclinado articulado
+409|Remada articulada unilateral
+410|Desenvolvimento articulado
+411|Encolhimento articulado
+412|Técnica de largada em 3 tempos
+413|Drill de aceleração na parede
+414|Salto em profundidade linear
+415|Pontes de Londres (corda)
+416|Olhar para o teto (alongamento)
+417|Crossover na polia baixa
+418|Tríceps na polia baixa
+419|Remada alta na polia baixa até o pescoço
+420|Liberação miofascial da lombar
+421|Extensão lombar no chão
+422|Afundo passando kettlebell
+423|Afundo com sprint
+424|Alongamento de virilha deitado
+425|Rosca deitado na polia
+426|Remada deitado com barra arqueada
+427|Rosca fechada deitado na polia alta
+428|Tríceps testa fechado atrás da cabeça
+429|Tríceps testa até o queixo com barra W
+430|Cruzamento deitado (alongamento)
+431|Tríceps testa com halteres
+432|Resistência de pescoço com anilha de bruços
+433|Resistência de pescoço com anilha de costas
+434|Alongamento de glúteo deitado
+435|Alongamento de posterior deitado
+436|Rosca deitado no banco alto com barra
+437|Mesa flexora
+438|Agachamento na máquina deitado
+439|Elevação lateral unilateral deitado
+440|Alongamento de quadríceps de bruços
+441|Crucifixo inverso deitado
+442|Rosca deitado com halteres
+443|Remada cavalinho apoiada
+444|Tríceps testa com barra W
+445|Supino na máquina
+446|Rosca na máquina
+447|Rosca Scott na máquina
+448|Desenvolvimento na máquina
+449|Tríceps na máquina
+450|Passe de peito com medicine ball
+451|Giro completo com medicine ball
+452|Arremesso por baixo com medicine ball
+453|Encolhimento para costas médias
+454|Alongamento de costas médias
+455|Barra fixa pegada mista
+456|Caminhada monstro (elástico)
+457|Escalador (mountain climber)
+458|Série garra em movimento
+459|Muscle snatch
+460|Muscle-up
+461|Agachamento hack pés fechados
+462|Leg press pés fechados
+463|Agachamento pés fechados
+464|Flexão nórdica
+465|Liberação miofascial do pescoço
+466|Supino até o pescoço
+467|Abdominal oblíquo
+468|Abdominal oblíquo no chão
+469|Agachamento olímpico
+470|Alongamento de quadríceps de costas
+471|Alongamento de quadríceps de lado
+472|Remada unilateral com halter
+473|Crucifixo unilateral com halter
+474|Flexão lateral unilateral na polia alta
+475|Elevação lateral unilateral no banco inclinado
+476|Clean unilateral com kettlebell
+477|Clean and jerk unilateral com kettlebell
+478|Supino no chão unilateral com kettlebell
+479|Jerk unilateral com kettlebell
+480|Desenvolvimento lateral unilateral com kettlebell
+481|Para press unilateral com kettlebell
+482|Push press unilateral com kettlebell
+483|Remada unilateral com kettlebell
+484|Snatch unilateral com kettlebell
+485|Split jerk unilateral com kettlebell
+486|Split snatch unilateral com kettlebell
+487|Swing unilateral com kettlebell
+488|Remada cavalinho unilateral (barra longa)
+489|Slam unilateral com medicine ball
+490|Clean de palma aberta unilateral com kettlebell
+491|Agachamento unilateral acima da cabeça com kettlebell
+492|Levantamento terra lateral unilateral
+493|Elevação lateral unilateral
+494|Coice de glúteo na polia
+495|Alongamento de dorsal na parede
+496|Barra fixa com um braço
+497|Supino unilateral com halter
+498|Rosca Scott unilateral com halter
+499|Supino no chão unilateral
+500|Puxada unilateral na polia
+501|Tríceps unilateral pronado com halter
+502|Tríceps unilateral supinado com halter
+503|Meio gafanhoto (alongamento)
+504|Suspensão com uma mão
+505|Joelho no peito
+506|Agachamento unilateral com barra
+507|Clean de palma aberta com kettlebell
+508|Otis-up
+509|Rosca na polia acima da cabeça
+510|Alongamento de dorsal acima da cabeça
+511|Slam com medicine ball
+512|Agachamento acima da cabeça (overhead)
+513|Alongamento acima da cabeça
+514|Alongamento de tríceps acima da cabeça
+515|Pallof press
+516|Pallof press com rotação
+517|Rosca de punho pronada com halter no banco
+518|Rosca de punho pronada com barra no banco
+519|Rosca de punho supinada com barra no banco
+520|Rosca de punho supinada com halter no banco
+521|Paralelas para tríceps (barra paralela)
+522|Retroversão pélvica até a ponte
+523|Liberação miofascial dos fibulares
+524|Alongamento dos fibulares
+525|Ponte de quadril na bola suíça
+526|Supino nos pinos (pin press)
+527|Liberação miofascial do piriforme
+528|Prancha
+529|Pinça de anilha
+530|Rotação com anilha
+531|Deslizamento de posterior na plataforma
+532|Agachamento sumô com halter
+533|Flexão pliométrica com kettlebells
+534|Flexão pliométrica
+535|Alongamento do tibial posterior
+536|Power clean
+537|Power clean a partir dos blocos
+538|Power jerk
+539|Parciais de potência com halteres
+540|Power snatch
+541|Power snatch a partir dos blocos
+542|Rosca Scott
+543|Rosca martelo no Scott
+544|Abdominal com barra (press sit-up)
+545|Alongamento manual de posterior de bruços
+546|Sprint com trenó (prowler)
+547|Pull through na polia
+548|Barra fixa
+549|Flexão aberta
+550|Flexão fechada (diamante)
+551|Flexão com pés elevados
+552|Flexão com pés na bola suíça
+553|Push press
+554|Push press por trás da nuca
+555|Flexão com prancha lateral
+556|Flexão de braço
+557|Flexão alternando pegada fechada e aberta
+558|Pirâmide na bola suíça
+559|Alongamento de quadríceps
+560|Liberação miofascial do quadríceps
+561|Salto rápido
+562|Rack delivery
+563|Rack pull com elástico
+564|Rack pull (terra parcial)
+565|Elevação de perna para trás
+566|Bicicleta horizontal
+567|Empurrão de retorno com medicine ball
+568|Supino com elástico reverso
+569|Agachamento no box com elástico reverso
+570|Levantamento terra com elástico reverso
+571|Agachamento com elástico reverso
+572|Terra sumô com elástico reverso
+573|Rosca inversa com barra
+574|Rosca Scott inversa com barra W
+575|Rosca inversa na polia
+576|Abdominal reverso
+577|Crucifixo inverso com halteres
+578|Crucifixo inverso com rotação externa
+579|Remada curvada supinada
+580|Tríceps na polia pegada invertida
+581|Hiperextensão reversa
+582|Crucifixo inverso na máquina
+583|Rosca inversa com anilha
+584|Supino inverso para tríceps
+585|Liberação miofascial dos romboides
+586|Mergulho nas argolas
+587|Salto foguete
+588|Panturrilha em pé com balanço
+589|Barra fixa e puxada Rocky
+590|Levantamento terra romeno
+591|Levantamento terra romeno com déficit
+592|Subida na corda
+593|Abdominal na polia com corda
+594|Pular corda
+595|Pulldown braço reto com corda
+596|Alongamento de ombro volta ao mundo
+597|Remo ergométrico
+598|Alongamento do corredor
+599|Corrida na esteira
+600|Rotação russa
+601|Retração escapular na barra
+602|Abdominal tesoura
+603|Salto tesoura
+604|Flexão de joelho sentado com elástico
+605|Desenvolvimento militar sentado com barra
+606|Rotação de tronco sentado com barra
+607|Tríceps unilateral sentado inclinado
+608|Crucifixo inverso sentado com halteres
+609|Tríceps com halteres sentado inclinado
+610|Alongamento de bíceps sentado
+611|Remada baixa
+612|Desenvolvimento sentado na polia
+613|Panturrilha sentado
+614|Alongamento de panturrilha sentado
+615|Rosca concentrada fechada com barra
+616|Rosca sentado com halteres
+617|Rosca aberta sentado com halteres
+618|Rosca de punho pronada sentado com halteres
+619|Rosca de punho supinada sentado com halteres
+620|Desenvolvimento sentado com halteres
+621|Recolhimento de pernas sentado no banco
+622|Alongamento de posterior sentado no chão
+623|Alongamento de deltoide anterior sentado
+624|Alongamento de glúteo sentado
+625|Bom-dia sentado
+626|Alongamento de posterior sentado
+627|Alongamento de posterior e panturrilha sentado
+628|Resistência de pescoço com capacete
+629|Cadeira flexora
+630|Abdominal grupado sentado
+631|Rosca de punho pronada unilateral sentado
+632|Rosca de punho supinada unilateral sentado
+633|Remada baixa unilateral
+634|Alongamento acima da cabeça sentado
+635|Rosca de punho supinada sentado com barra
+636|Rosca de punho pronada sentado com barra
+637|Elevação lateral sentado
+638|Tríceps francês sentado
+639|Rosca de punho na polia baixa sentado
+640|Desenvolvimento gangorra com halteres
+641|Remada shotgun na polia
+642|Círculos com os ombros
+643|Desenvolvimento com elástico
+644|Elevação de ombros (alongamento)
+645|Alongamento de ombro
+646|Alongamento lateral deitado
+647|Prancha lateral
+648|Salto lateral com sprint
+649|Canivete lateral
+650|Elevação lateral
+651|Elevação lateral e frontal
+652|Elevação lateral de perna
+653|Alongamento de virilha deitado de lado
+654|Alongamento lateral de pescoço
+655|Salto lateral em distância
+656|Barra fixa de lado a lado
+657|Alongamento puxando o punho
+658|Deslocamento lateral na caixa
+659|Crossover unilateral na polia
+660|Landmine jammer unilateral
+661|Flexão com um braço
+662|Drill de sprint com cone
+663|Agachamento unilateral na caixa alta
+664|Progressão de saltos unilaterais
+665|Salto lateral unilateral
+666|Cadeira extensora unilateral
+667|Salto de passada unilateral
+668|Elevação frontal com um halter
+669|Chute no glúteo unilateral
+670|Ponte de glúteo unilateral
+671|Impulso unilateral na caixa
+672|Abdominal completo (sit-up)
+673|Agachamento sentado (alongamento)
+674|Patinação
+675|Caminhada de costas com trenó acima da cabeça
+676|Tríceps com trenó acima da cabeça
+677|Crucifixo inverso com trenó
+678|Remada com trenó
+679|Golpes com marreta no pneu
+680|Elevação de ombro inclinado no Smith
+681|Encolhimento por trás no Smith
+682|Supino no Smith
+683|Remada curvada no Smith
+684|Panturrilha no Smith
+685|Supino fechado no Smith
+686|Supino declinado no Smith (pegada aberta)
+687|Hang power clean no Smith
+688|Elevação de quadril no Smith
+689|Supino inclinado no Smith
+690|Leg press no Smith
+691|Remada alta unilateral no Smith
+692|Desenvolvimento no Smith
+693|Agachamento pistol no Smith
+694|Panturrilha invertida no Smith (tibial)
+695|Agachamento no Smith
+696|Stiff no Smith
+697|Remada alta no Smith
+698|Agachamento afundo unilateral no Smith
+699|Snatch (arranco)
+700|Snatch balance (equilíbrio)
+701|Levantamento terra de snatch
+702|Puxada de snatch
+703|Encolhimento de snatch
+704|Snatch a partir dos blocos
+705|Tríceps acima da cabeça com elástico (velocidade)
+706|Agachamento no box de velocidade
+707|Agachamento de velocidade
+708|Spell caster com halteres
+709|Rastejo do homem-aranha
+710|Rosca aranha (spider curl)
+711|Alongamento da coluna
+712|Split clean
+713|Split jerk
+714|Salto afundo (split jump)
+715|Split snatch
+716|Agachamento búlgaro
+717|Agachamento afundo estático
+718|Squat jerk
+719|Agachamento com elástico
+720|Agachamento com correntes
+721|Agachamento movendo anilhas
+722|Agachamento só com elástico
+723|Escada (simulador)
+724|Desenvolvimento alternado em pé com halteres
+725|Panturrilha em pé com barra
+726|Desenvolvimento por trás da nuca em pé
+727|Tríceps coice unilateral em pé
+728|Tríceps com halteres curvado em pé
+729|Rosca na polia em pé
+730|Alongamento de bíceps em pé
+731|Desenvolvimento Bradford em pé
+732|Supino em pé na polia
+733|Elevação na polia em pé (lift)
+734|Lenhador na polia
+735|Panturrilha em pé
+736|Rosca concentrada em pé
+737|Panturrilha em pé com halteres
+738|Desenvolvimento em pé com halteres
+739|Rosca inversa em pé com halteres
+740|Elevação frontal acima da cabeça com halteres
+741|Tríceps francês
+742|Remada alta com halteres
+743|Alongamento de quadríceps com pé elevado
+744|Elevação frontal acima da cabeça com barra
+745|Alongamento de gastrocnêmio em pé
+746|Alongamento de posterior e panturrilha em pé
+747|Círculos de quadril em pé
+748|Alongamento de flexores do quadril em pé
+749|Rosca aberta em pé com halteres
+750|Alongamento lateral em pé
+751|Flexora em pé
+752|Salto em distância parado
+753|Elevação lateral na polia baixa em pé
+754|Tríceps unilateral na polia baixa em pé
+755|Desenvolvimento militar em pé
+756|Pegada de anilha em pé
+757|Rosca unilateral na polia em pé
+758|Rosca unilateral apoiado no banco inclinado
+759|Tríceps francês unilateral em pé
+760|Tríceps francês com barra em pé
+761|Desenvolvimento unilateral pegada neutra em pé
+762|Desenvolvimento pegada neutra em pé
+763|Rosca de punho por trás com barra
+764|Retroversão pélvica em pé
+765|Abdominal em pé na polia com corda
+766|Alongamento de sóleo e tendão de Aquiles
+767|Tocar os pés em pé
+768|Tríceps com toalha em pé
+769|Arremesso acima da cabeça com medicine ball
+770|Polichinelo estrela (star jump)
+771|Subida no banco com elevação de joelho
+772|Escada rolante (step mill)
+773|Stiff com barra
+774|Stiff com halteres
+775|Bom-dia com pernas estendidas
+776|Vácuo abdominal
+777|Pullover com halter braço reto
+778|Pulldown braço reto
+779|Remada no banco com barra reta
+780|Elevação frontal no banco inclinado com barra
+781|Salto de passada cruzado
+782|Levantamento terra sumô
+783|Terra sumô com elástico
+784|Terra sumô com correntes
+785|Super-homem
+786|Arremesso de peito deitado
+787|Arremesso unilateral acima da cabeça deitado
+788|Arremesso acima da cabeça deitado
+789|Rollout suspenso (TRX)
+790|Flexão suspensa (TRX)
+791|Abdominal reverso suspenso (TRX)
+792|Remada suspensa (TRX)
+793|Agachamento afundo suspenso (TRX)
+794|Svend press (aperto de anilha)
+795|Remada cavalinho com pegador
+796|Tate press
+797|Alongamento em abertura (straddle)
+798|Cadeira abdutora
+799|Cadeira adutora
+800|Toque nos pés (abdominal)
+801|Rotação de tronco na bola suíça
+802|Corrida ou caminhada em trilha
+803|Levantamento terra com trap bar
+804|Tríceps coice com halteres
+805|Alongamento lateral de tríceps
+806|Tríceps francês na polia com corda (overhead)
+807|Tríceps na polia com barra
+808|Tríceps corda
+809|Tríceps na polia com barra V
+810|Alongamento de tríceps
+811|Abdominal grupado
+812|Rosca Scott com halteres
+813|Clean com dois kettlebells
+814|Jerk com dois kettlebells (em pé)
+815|Desenvolvimento militar com dois kettlebells
+816|Remada com dois kettlebells
+817|Puxada supinada na polia
+818|Alongamento de costas segurando a perna
+819|Alongamento de costas superior
+820|Remada alta com barra
+821|Remada alta na polia
+822|Remada alta com elástico
+823|Alongamento para cima
+824|Puxada com triângulo
+825|Barra fixa com triângulo
+826|Swing vertical com halter
+827|Caminhada na esteira
+828|Hiperextensão na bola com peso
+829|Flexão lateral na bola com peso
+830|Tríceps banco com peso
+831|Abdominal com medicine ball
+832|Agachamento com salto com barra
+833|Barra fixa com peso
+834|Agachamento sissy com peso
+835|Abdominal completo com peso e elástico
+836|Agachamento com cinto de peso
+837|Supino reto pegada aberta
+838|Supino declinado pegada aberta
+839|Pullover declinado com barra pegada aberta
+840|Puxada frente aberta
+841|Puxada por trás da nuca
+842|Barra fixa aberta por trás
+843|Rosca direta pegada aberta
+844|Agachamento sumô com barra
+845|Stiff com base aberta
+846|Sprints de vento (abdominal)
+847|Moinhos (alongamento)
+848|Melhor alongamento do mundo
+849|Círculos com os punhos
+850|Rolo de punho (wrist roller)
+851|Rotação de punho com barra
+852|Agachamento Zercher
+853|Rosca Zottman
+854|Rosca Zottman no Scott

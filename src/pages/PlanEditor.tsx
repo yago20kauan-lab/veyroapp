@@ -9,12 +9,13 @@ import { BottomSheet, useToast } from '../ui/overlays'
 import { useSession } from '../store/session'
 import { currentUserId } from '../store/session'
 import { nowIso } from '../db/schema'
+import { ExerciseAnim, ExerciseThumb } from '../ui/ExerciseMedia'
 
 const weekdays = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB']
 const muscles: { id: Muscle; label: string }[] = [
   { id: 'peito', label: 'Peito' }, { id: 'costas', label: 'Costas' }, { id: 'ombros', label: 'Ombros' }, { id: 'biceps', label: 'Bíceps' },
   { id: 'triceps', label: 'Tríceps' }, { id: 'quadriceps', label: 'Quadríceps' }, { id: 'posterior', label: 'Posterior' }, { id: 'gluteos', label: 'Glúteos' },
-  { id: 'panturrilha', label: 'Panturrilha' }, { id: 'abdomen', label: 'Abdômen' }, { id: 'trapezio', label: 'Trapézio' }, { id: 'cardio', label: 'Cardio' },
+  { id: 'panturrilha', label: 'Panturrilha' }, { id: 'abdomen', label: 'Abdômen' }, { id: 'trapezio', label: 'Trapézio' }, { id: 'antebraco', label: 'Antebraço' }, { id: 'cardio', label: 'Cardio' },
 ]
 const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
@@ -200,31 +201,77 @@ export function RoutineEditor() {
   )
 }
 
+const equipChips: [Equipment, string][] = [['barbell', 'Barra'], ['dumbbell', 'Halteres'], ['machine', 'Máquina'], ['cable', 'Polia'], ['bodyweight', 'Peso corporal'], ['kettlebell', 'Kettlebell'], ['other', 'Acessório'], ['cardio', 'Cardio']]
+const typeChips: [string, string][] = [['musculacao', 'Musculação'], ['alongamento', 'Alongamento'], ['pliometria', 'Pliometria'], ['olimpico', 'Olímpico']]
+const muscleName = Object.fromEntries(muscles.map((m) => [m.id, m.label])) as Record<string, string>
+const equipName = Object.fromEntries(equipChips) as Record<string, string>
+const typeOf = (e: Exercise) => (e.category === 'stretching' ? 'alongamento' : e.category === 'plyometrics' ? 'pliometria' : e.category === 'olympic weightlifting' ? 'olimpico' : 'musculacao')
+
 export function ExercisePicker({ open, onClose, exercises, onPick }: { open: boolean; onClose: () => void; exercises: Exercise[]; onPick: (e: Exercise) => void }) {
   const [q, setQ] = useState('')
   const [m, setM] = useState<Muscle | null>(null)
+  const [eq, setEq] = useState<Equipment | null>(null)
+  const [tp, setTp] = useState<string | null>(null)
+  const [limit, setLimit] = useState(60)
   const [creating, setCreating] = useState(false)
-  const list = exercises.filter((e) => !e.deleted_at && (e.user_id === null || e.user_id === currentUserId()) && (!m || e.primaryMuscle === m) && (!q || norm(e.name).includes(norm(q))))
+  const [info, setInfo] = useState<Exercise | null>(null)
+  const uid = currentUserId()
+  const list = useMemo(() => {
+    const nq = norm(q.trim())
+    const toks = nq.split(/\s+/).filter(Boolean)
+    const rank = (e: Exercise) => (e.user_id ? 0 : !e.id.startsWith('fx-') ? 1 : e.category === 'stretching' || e.category === 'plyometrics' ? 3 : 2)
+    return exercises
+      .filter((e) => !e.deleted_at && (e.user_id === null || e.user_id === uid) && (!m || e.primaryMuscle === m) && (!eq || e.equipment === eq) && (!tp || typeOf(e) === tp))
+      .filter((e) => { if (!toks.length) return true; const h = norm(e.name + ' ' + (e.nameEn ?? '')); return toks.every((t) => h.includes(t)) })
+      .sort((a, b) => (nq ? Number(!norm(b.name).startsWith(nq)) - Number(!norm(a.name).startsWith(nq)) : 0) * -1 || rank(a) - rank(b) || a.name.localeCompare(b.name, 'pt'))
+  }, [exercises, q, m, eq, tp, uid])
+  useEffect(() => setLimit(60), [q, m, eq, tp])
   return (
     <BottomSheet open={open} onClose={onClose} title="Adicionar exercício">
       {creating ? (
         <CreateExercise onCreated={(e) => { setCreating(false); onPick(e) }} onCancel={() => setCreating(false)} />
+      ) : info ? (
+        <div>
+          <button className="mb-3 text-sm text-lime" onClick={() => setInfo(null)}>‹ Voltar à lista</button>
+          <h3 className="mb-1 font-display text-lg font-bold">{info.name}</h3>
+          <p className="mb-3 text-xs text-muted">{[info.primaryMuscle, ...info.secondaryMuscles].map((x) => muscleName[x] ?? x).join(' · ')} · {equipName[info.equipment] ?? info.equipment}{info.level ? ` · ${info.level}` : ''}</p>
+          <ExerciseAnim ex={info} className="mb-4 aspect-[4/3] w-full" />
+          {info.cues?.length ? <ul className="mb-4 list-disc space-y-1 pl-5 text-sm">{info.cues.map((c) => <li key={c}>{c}</li>)}</ul> : null}
+          {info.instructionsEn?.length ? (
+            <details className="mb-4 text-sm text-muted"><summary className="cursor-pointer text-text">Passo a passo (texto original em inglês)</summary><ol className="mt-2 list-decimal space-y-1 pl-5">{info.instructionsEn.map((c) => <li key={c}>{c}</li>)}</ol></details>
+          ) : null}
+          <PrimaryButton full onClick={() => { onPick(info); setInfo(null) }}>Adicionar ao treino</PrimaryButton>
+        </div>
       ) : (
         <>
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar exercício" className="mb-3 h-12 w-full rounded-btn border border-border bg-surface2 px-4 text-base outline-none focus:border-lime" />
-          <div className="no-scrollbar -mx-5 mb-3 flex gap-2 overflow-x-auto px-5">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar entre os exercícios (português ou inglês)" className="mb-3 h-12 w-full rounded-btn border border-border bg-surface2 px-4 text-base outline-none focus:border-lime" />
+          <div className="no-scrollbar -mx-5 mb-2 flex gap-2 overflow-x-auto px-5">
             <Chip active={!m} onClick={() => setM(null)}>Todos</Chip>
-            {muscles.map((x) => <Chip key={x.id} active={m === x.id} onClick={() => setM(x.id)}>{x.label}</Chip>)}
+            {muscles.map((x) => <Chip key={x.id} active={m === x.id} onClick={() => setM(m === x.id ? null : x.id)}>{x.label}</Chip>)}
           </div>
+          <div className="no-scrollbar -mx-5 mb-2 flex gap-2 overflow-x-auto px-5">
+            {equipChips.map(([k, l]) => <Chip key={k} active={eq === k} onClick={() => setEq(eq === k ? null : k)}>{l}</Chip>)}
+          </div>
+          <div className="no-scrollbar -mx-5 mb-2 flex gap-2 overflow-x-auto px-5">
+            {typeChips.map(([k, l]) => <Chip key={k} active={tp === k} onClick={() => setTp(tp === k ? null : k)}>{l}</Chip>)}
+          </div>
+          <p className="mb-1 text-xs text-muted">{list.length} exercício{list.length === 1 ? '' : 's'}</p>
           <div className="flex flex-col divide-y divide-border">
-            {list.map((e) => (
-              <button key={e.id} onClick={() => onPick(e)} className="flex items-center justify-between py-3 text-left">
-                <span className="text-sm">{e.name}{e.user_id ? <span className="label ml-2 text-lime">seu</span> : null}</span>
-                <span className="text-lime">+</span>
-              </button>
+            {list.slice(0, limit).map((e) => (
+              <div key={e.id} className="flex items-center gap-3 py-2">
+                <button onClick={() => setInfo(e)} aria-label={`Ver ${e.name}`}><ExerciseThumb ex={e} /></button>
+                <button onClick={() => onPick(e)} className="min-w-0 flex-1 text-left">
+                  <span className="block truncate text-sm">{e.name}{e.user_id ? <span className="label ml-2 text-lime">seu</span> : null}</span>
+                  <span className="block truncate text-[11px] text-muted">{muscleName[e.primaryMuscle] ?? e.primaryMuscle} · {equipName[e.equipment] ?? e.equipment}</span>
+                </button>
+                <button onClick={() => onPick(e)} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface2 text-lg text-lime" aria-label={`Adicionar ${e.name}`}>+</button>
+              </div>
             ))}
           </div>
+          {list.length > limit && <PrimaryButton variant="ghost" full className="mt-2" onClick={() => setLimit(limit + 120)}>Mostrar mais ({list.length - limit})</PrimaryButton>}
+          {list.length === 0 && <p className="py-6 text-center text-sm text-muted">Nada encontrado. Crie o seu abaixo.</p>}
           <PrimaryButton variant="ghost" full className="mt-3" onClick={() => setCreating(true)}>Criar exercício próprio</PrimaryButton>
+          <p className="mt-3 text-center text-[11px] text-muted/70">Fotos e biblioteca ampliada: Free Exercise DB (domínio público).</p>
         </>
       )}
     </BottomSheet>
@@ -236,7 +283,7 @@ function CreateExercise({ onCreated, onCancel }: { onCreated: (e: Exercise) => v
   const [muscle, setMuscle] = useState<Muscle>('peito')
   const [equip, setEquip] = useState<Equipment>('machine')
   const [compound, setCompound] = useState(false)
-  const equips: [Equipment, string][] = [['barbell', 'Barra'], ['dumbbell', 'Halteres'], ['machine', 'Máquina'], ['cable', 'Polia'], ['bodyweight', 'Peso corporal']]
+  const equips = equipChips.filter(([k]) => k !== 'cardio')
   return (
     <>
       <Label className="mb-1.5">Nome</Label>

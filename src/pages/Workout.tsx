@@ -18,13 +18,14 @@ import { headline } from '../domain/records'
 import { haptic } from '../lib/haptics'
 import { beep, unlockAudio } from '../lib/sound'
 import { todayReadiness } from '../lib/readiness'
+import { ExerciseAnim, ExerciseThumb } from '../ui/ExerciseMedia'
 
 const RPE_NONE = 5.5
 const muscleLabel: Record<string, string> = {
   peito: 'peito', costas: 'costas', ombros: 'ombros', biceps: 'bíceps', triceps: 'tríceps', quadriceps: 'quadríceps',
   posterior: 'posterior', gluteos: 'glúteos', panturrilha: 'panturrilha', abdomen: 'abdômen', antebraco: 'antebraço', trapezio: 'trapézio', cardio: 'cardio',
 }
-const equipLabel: Record<string, string> = { barbell: 'barra', dumbbell: 'halteres', machine: 'máquina', cable: 'polia', bodyweight: 'peso corporal', cardio: 'cardio' }
+const equipLabel: Record<string, string> = { barbell: 'barra', dumbbell: 'halteres', kettlebell: 'kettlebell', machine: 'máquina', cable: 'polia', bodyweight: 'peso corporal', other: 'acessório', cardio: 'cardio' }
 
 function useNow(ms = 1000) {
   const [now, setNow] = useState(Date.now())
@@ -193,7 +194,10 @@ export default function Workout() {
   const isTime = ex.kind === 'time'
   const isCardio = ex.kind === 'cardio'
   const spark = hist.sessions.slice(-6).map((s) => workingKg(s) ?? 0).filter(Boolean)
-  const sameSwap = exercises.filter((e) => e.pattern === ex.pattern && e.id !== ex.id && !e.deleted_at)
+  const sameSwap = exercises
+    .filter((e) => e.pattern === ex.pattern && e.id !== ex.id && !e.deleted_at && (!e.user_id || e.user_id === ex.user_id || e.user_id === session?.user_id) && e.category !== 'stretching')
+    .sort((a, b) => Number(a.id.startsWith('fx-')) - Number(b.id.startsWith('fx-')) || Number(a.primaryMuscle !== ex.primaryMuscle) - Number(b.primaryMuscle !== ex.primaryMuscle) || a.name.localeCompare(b.name, 'pt'))
+    .slice(0, 25)
 
   return (
     <div className="pt-safe mx-auto max-w-md pb-40">
@@ -409,10 +413,13 @@ export default function Workout() {
                 setSheet(null)
                 toast(`Trocado por ${e.name}`)
               }}
-              className="rounded-btn border border-border bg-surface2 px-4 py-3 text-left"
+              className="flex items-center gap-3 rounded-btn border border-border bg-surface2 px-3 py-2.5 text-left"
             >
-              <span className="block text-sm font-semibold">{e.name}</span>
-              <span className="text-xs text-muted">{equipLabel[e.equipment]}</span>
+              <ExerciseThumb ex={e} size={40} />
+              <span className="min-w-0">
+                <span className="block text-sm font-semibold">{e.name}</span>
+                <span className="text-xs text-muted">{muscleLabel[e.primaryMuscle]} · {equipLabel[e.equipment]}</span>
+              </span>
             </button>
           ))}
           {session.swaps?.[idx] && (
@@ -427,9 +434,11 @@ export default function Workout() {
       </BottomSheet>
 
       <BottomSheet open={sheet === 'how'} onClose={() => setSheet(null)} title={`Como fazer · ${ex.name}`}>
-        <div className="mb-4 flex aspect-video items-center justify-center rounded-btn border border-border bg-surface2">
-          {ex.videoUrl ? <video src={ex.videoUrl} autoPlay loop muted playsInline className="h-full w-full rounded-btn object-cover" /> : <div className="flex flex-col items-center gap-2 text-xs text-muted"><VeyroMark size={36} variant="mono" />Vídeo em breve</div>}
-        </div>
+        {ex.images?.length ? <ExerciseAnim ex={ex} className="mb-4 aspect-[4/3] w-full" /> : (
+          <div className="mb-4 flex aspect-video items-center justify-center rounded-btn border border-border bg-surface2">
+            {ex.videoUrl ? <video src={ex.videoUrl} autoPlay loop muted playsInline className="h-full w-full rounded-btn object-cover" /> : <div className="flex flex-col items-center gap-2 text-xs text-muted"><VeyroMark size={36} variant="mono" />Sem fotos para este exercício</div>}
+          </div>
+        )}
         <Label className="mb-2">Pontos-chave</Label>
         {ex.cues?.length ? <ul className="mb-4 list-disc space-y-1 pl-5 text-sm">{ex.cues.map((c) => <li key={c}>{c}</li>)}</ul> : <p className="mb-4 text-sm text-muted">Movimento controlado, amplitude completa e sem balanço.</p>}
         {ex.commonMistakes?.length ? (
@@ -440,6 +449,9 @@ export default function Workout() {
         ) : null}
         <Label className="mb-1">Músculos</Label>
         <p className="text-sm">{[ex.primaryMuscle, ...ex.secondaryMuscles].map((m) => muscleLabel[m]).join(' · ')}</p>
+        {ex.instructionsEn?.length ? (
+          <details className="mt-4 text-sm text-muted"><summary className="cursor-pointer text-text">Passo a passo (texto original em inglês)</summary><ol className="mt-2 list-decimal space-y-1 pl-5">{ex.instructionsEn.map((c) => <li key={c}>{c}</li>)}</ol></details>
+        ) : null}
       </BottomSheet>
 
       <BottomSheet open={sheet === 'warmup'} onClose={() => setSheet(null)} title="Aquecimento">

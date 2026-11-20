@@ -91,6 +91,8 @@ const rows: Row[] = [
 const defaults: Record<Equipment, { step: number; inc: number }> = {
   barbell: { step: 0.5, inc: 2.5 },
   dumbbell: { step: 1, inc: 2 },
+  kettlebell: { step: 2, inc: 4 },
+  other: { step: 1, inc: 1 },
   machine: { step: 1, inc: 2.5 },
   cable: { step: 1, inc: 2.5 },
   bodyweight: { step: 1, inc: 0 },

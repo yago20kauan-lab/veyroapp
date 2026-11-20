@@ -31,7 +31,7 @@ export async function callAI(kind: AIKind, payload: unknown): Promise<unknown> {
 
 /** Biblioteca enviada para a IA (só id, nome, músculo e equipamento). */
 export async function libraryForAI() {
-  return (await db.exercises.toArray()).filter((e) => !e.deleted_at && e.kind !== 'cardio').map((e) => ({ id: e.id, name: e.name, muscle: e.primaryMuscle, equipment: e.equipment, compound: e.isCompound }))
+  return (await db.exercises.toArray()).filter((e) => !e.deleted_at && e.kind !== 'cardio' && !e.id.startsWith('fx-')).map((e) => ({ id: e.id, name: e.name, muscle: e.primaryMuscle, equipment: e.equipment, compound: e.isCompound }))
 }
 
 /** Resumo anonimizado: sem nome, e-mail, fotos ou datas de nascimento. */

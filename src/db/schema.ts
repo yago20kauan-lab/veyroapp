@@ -6,7 +6,7 @@ export type SyncFields = { user_id: string; updated_at: string; deleted_at?: str
 export type Muscle =
   | 'peito' | 'costas' | 'ombros' | 'biceps' | 'triceps' | 'quadriceps' | 'posterior'
   | 'gluteos' | 'panturrilha' | 'abdomen' | 'antebraco' | 'trapezio' | 'cardio'
-export type Equipment = 'barbell' | 'dumbbell' | 'machine' | 'cable' | 'bodyweight' | 'cardio'
+export type Equipment = 'barbell' | 'dumbbell' | 'kettlebell' | 'machine' | 'cable' | 'bodyweight' | 'other' | 'cardio'
 export type ExerciseKind = 'weight' | 'bodyweight_plus' | 'time' | 'cardio'
 
 /** Global (user_id null) ou criado pelo usuário. */
@@ -27,6 +27,13 @@ export type Exercise = {
   cues?: string[]
   commonMistakes?: string[]
   videoUrl?: string
+  /** Biblioteca ampliada (Free Exercise DB, domínio público) */
+  nameEn?: string
+  images?: string[]
+  instructionsEn?: string[]
+  level?: string
+  category?: string
+  source?: 'fedb'
   updated_at: string
   deleted_at?: string | null
 }
