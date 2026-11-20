@@ -227,7 +227,7 @@ export default function Dieta() {
               <span className="font-semibold">Exercício</span>
               <span className="num text-sm text-muted">{exercise?.sess.length ? `${exercise.sess.length} treino${exercise.sess.length > 1 ? 's' : ''}` : '—'}{exercise?.cardio.length ? ` · ${exercise.cardio.reduce((a, c) => a + c.minutes, 0)} min cardio` : ''}</span>
             </div>
-            <p className="mt-1 text-xs text-muted">{exercise?.sess.length ? exercise.sess.map((s) => s.routineName).join(', ') : 'Os treinos e o cardio registrados aparecem aqui.'} O gasto do exercício já entra no cálculo das suas metas.</p>
+            <p className="mt-1 text-xs text-muted">{exercise?.sess.length ? exercise.sess.map((s) => s.routineName).join(', ') + '.' : 'Os treinos e o cardio registrados aparecem aqui.'} O gasto do exercício já entra no cálculo das suas metas.</p>
           </Card>
 
           {/* Água */}
