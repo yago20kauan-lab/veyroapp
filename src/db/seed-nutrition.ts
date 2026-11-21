@@ -37,6 +37,10 @@ const rows: F[] = [
   ['castanha-para', 'Castanha-do-pará', 643, 14.5, 15.1, 63.5, 'na', 'fat', 'mercearia'],
   ['legumes-cozidos', 'Legumes cozidos (brócolis, abobrinha, cenoura)', 30, 1.8, 5.5, 0.3, 'cooked', 'veg', 'hortifruti', 1.0],
   ['salada-folhas', 'Salada de folhas, tomate e pepino', 15, 1.0, 2.8, 0.2, 'na', 'veg', 'hortifruti'],
+  // usados nas dietas prontas (não existem ou estão sem valores na TACO)
+  ['leite-desnatado', 'Leite desnatado', 34, 3.3, 4.8, 0.2, 'na', 'dairy', 'laticinios'],
+  ['requeijao-light', 'Requeijão light', 180, 10.0, 4.0, 14.0, 'na', 'dairy', 'laticinios'],
+  ['wrap-integral', 'Wrap / rap10 integral', 290, 8.0, 50.0, 6.0, 'na', 'bread', 'padaria'],
 ]
 
 export const seedFoods: Food[] = rows.map(([id, name, kcal, p, c, f, state, swapGroup, section, yieldFactor]) => ({

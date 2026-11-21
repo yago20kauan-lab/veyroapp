@@ -133,6 +133,7 @@ export default function Metas() {
         <Label className="mb-2">Atividade</Label>
         <div className="mb-3 flex flex-col gap-1.5">{(Object.keys(ACTIVITY) as Activity[]).map((a) => <button key={a} onClick={() => setActivity(a)} className={`rounded-btn border px-3 py-2 text-left text-sm ${activity === a ? 'border-lime bg-lime/10' : 'border-border'}`}>{ACTIVITY[a].label}</button>)}</div>
         <PrimaryButton variant="ghost" full onClick={recalcular}>Recalcular metas</PrimaryButton>
+        <PrimaryButton full className="mt-2" onClick={() => nav('/dieta/sugestao')}>Sugerir dieta pronta</PrimaryButton>
       </Card>
 
       <SectionTitle kicker="Metas diárias" title={`${final.kcal.toLocaleString('pt-BR')} kcal`} right={<div className="flex gap-1.5"><Chip active={mode === 'grams'} onClick={() => setMode('grams')}>g</Chip><Chip active={mode === 'percent'} onClick={() => { setMode('percent'); setKcalPct(final.kcal); setPct(gramsToPercent(final)) }}>%</Chip></div>} />

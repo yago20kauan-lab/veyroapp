@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { AnimatePresence, motion } from 'framer-motion'
 import { db, type DietTargets, type Profile } from '../db/schema'
@@ -10,6 +10,9 @@ import { ensureProfile, activateProgram } from '../lib/plan'
 import { ACTIVITY, age as ageOf, calcTargets, cycleTargets, type Activity, type Goal, type Sex } from '../domain/diet'
 import { localDate, nextMonday } from '../domain/plan'
 import { seedPrograms } from '../db/seed-programs'
+import { applySuggestion, buildSuggestion, type Suggestion } from '../lib/dietTemplates'
+import { DISCLAIMER, type DietStyle } from '../domain/dietSuggest'
+import { MealsSheet, StyleCards } from './diet/DietaSugerida'
 import { useSession } from '../store/session'
 
 type Equip = 'academia' | 'halteres' | 'casa'
@@ -51,6 +54,10 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
   const [programId, setProgramId] = useState<string | null>(null)
   const [start, setStart] = useState<'hoje' | 'segunda'>('hoje')
   const [busy, setBusy] = useState(false)
+  const [sug, setSug] = useState<Suggestion | null>(null)
+  const [dietStyle, setDietStyle] = useState<DietStyle | null>(null)
+  const [applyDiet, setApplyDiet] = useState(true)
+  const [mealsOpen, setMealsOpen] = useState(false)
 
   const suggested = suggestProgram(days, exp, sex)
   const chosen = programId ?? suggested
@@ -58,6 +65,16 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
 
   const steps = ['perfil', 'corpo', 'rotina', ...(hasPlan ? [] : ['programa']), 'dieta'] as const
   const cur = steps[step]
+  useEffect(() => {
+    if (cur !== 'dieta') return
+    let alive = true
+    buildSuggestion({ sex, weightKg: weight, heightCm: height, age: ageOf(birth), activity, goal }).then((r) => {
+      if (!alive) return
+      setSug(r)
+      setDietStyle(r.defaultStyle)
+    })
+    return () => { alive = false }
+  }, [cur, sex, weight, height, birth, activity, goal])
   const last = step === steps.length - 1
 
   async function finish() {
@@ -91,6 +108,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
         const prog = seedPrograms.find((x) => x.id === chosen)
         if (prog) await activateProgram(prog, start === 'hoje' ? localDate() : nextMonday(), {}, pause !== 'nao' && pause !== '2-4s')
       }
+      if (applyDiet && sug && dietStyle) await applySuggestion(sug, dietStyle, { weightKg: weight, activity, goal })
       onDone()
     } finally {
       setBusy(false)
@@ -199,24 +217,27 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
 
           {cur === 'dieta' && (
             <>
-              <h1 className="mb-1 font-display text-2xl font-bold">Suas metas de dieta</h1>
-              <p className="mb-5 text-sm text-muted">Calculadas pelo seu perfil (Mifflin-St Jeor). Você edita em Dieta → Metas.</p>
+              <h1 className="mb-1 font-display text-2xl font-bold">Sua dieta sugerida</h1>
               <Card className="mb-3">
-                <div className="flex items-end justify-between">
-                  <div>
-                    <Label>Meta diária</Label>
-                    <div className="num font-display text-4xl font-extrabold">{calc.targets.kcal.toLocaleString('pt-BR')}<span className="ml-1 text-base font-semibold text-muted">kcal</span></div>
-                  </div>
-                  <div className="text-right text-xs text-muted">gasto ~{calc.tdee.toLocaleString('pt-BR')}<br />{calc.adjustment ? `${calc.adjustment > 0 ? '+' : ''}${calc.adjustment} kcal` : 'manutenção'}</div>
-                </div>
-                <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                  {[['Proteína', calc.targets.p], ['Carbo', calc.targets.c], ['Gordura', calc.targets.f]].map(([l, v]) => (
-                    <div key={l} className="rounded-btn bg-surface2 py-3"><div className="num text-xl font-bold">{v}g</div><div className="label mt-1">{l}</div></div>
-                  ))}
-                </div>
+                <Label>Sua meta</Label>
+                <div className="num font-display text-4xl font-extrabold">{(sug?.target.kcal ?? calc.targets.kcal).toLocaleString('pt-BR')}<span className="ml-1 text-base font-semibold text-muted">kcal/dia</span></div>
+                <p className="mt-1 text-sm text-muted">{sug?.target.explanation ?? calc.suggestion.explanation}</p>
+                {sug?.target.warnings.map((w) => <p key={w} className="mt-2 text-sm text-gold">{w}</p>)}
+                {sug?.target.floored && <p className="mt-2 text-sm text-gold">Ajustamos para o mínimo seguro sem acompanhamento profissional.</p>}
               </Card>
-              {calc.floored && <p className="mb-3 text-sm text-gold">Ajustamos para o mínimo seguro sem acompanhamento profissional.</p>}
-              <p className="text-xs text-muted">Estimativa. Com 2 semanas de registros, o VEYRO descobre seu gasto real e ajusta a meta. Não substitui orientação profissional.</p>
+              {sug && dietStyle ? (
+                <>
+                  <StyleCards s={sug} style={dietStyle} onStyle={setDietStyle} />
+                  <PrimaryButton variant="ghost" full className="mt-2" onClick={() => setMealsOpen(true)}>Ver refeições</PrimaryButton>
+                  <Label className="mb-2 mt-4">Aplicar ao meu plano alimentar?</Label>
+                  <div className="flex gap-2">
+                    <Chip active={applyDiet} onClick={() => setApplyDiet(true)}>Sim, usar esta dieta</Chip>
+                    <Chip active={!applyDiet} onClick={() => setApplyDiet(false)}>Agora não</Chip>
+                  </div>
+                  <MealsSheet open={mealsOpen} onClose={() => setMealsOpen(false)} meals={sug.styles.find((x) => x.style === dietStyle)?.fit.meals} title="Refeições" />
+                </>
+              ) : <p className="py-6 text-center text-sm text-muted">Montando as opções…</p>}
+              <p className="mt-4 text-[11px] leading-snug text-muted">{DISCLAIMER} Com 2 semanas de registros, o VEYRO descobre seu gasto real e ajusta a meta.</p>
             </>
           )}
         </motion.div>

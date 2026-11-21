@@ -23,6 +23,8 @@ import Suplementos from './pages/diet/Suplementos'
 import Alimentos from './pages/diet/Alimentos'
 import Relatorio from './pages/diet/Relatorio'
 import AdicionarAlimento from './pages/diet/AdicionarAlimento'
+import DietaSugerida from './pages/diet/DietaSugerida'
+import DietasProntas from './pages/diet/DietasProntas'
 import DefinicoesDiario from './pages/diet/DefinicoesDiario'
 import Comparar from './pages/Comparar'
 import Checkin from './pages/Checkin'
@@ -43,7 +45,7 @@ const tabs = [
   { to: '/progresso', label: 'Progresso', Icon: IconChart },
 ]
 
-const isFullScreen = (path: string) => path.startsWith('/treino/') || path.startsWith('/resumo/') || path.startsWith('/plano/') || path === '/checkin' || path.startsWith('/dieta/adicionar/') || path === '/dieta/definicoes' || path === '/dieta/metas' || path === '/dieta/plano'
+const isFullScreen = (path: string) => path.startsWith('/treino/') || path.startsWith('/resumo/') || path.startsWith('/plano/') || path === '/checkin' || path.startsWith('/dieta/adicionar/') || path === '/dieta/definicoes' || path === '/dieta/metas' || path === '/dieta/plano' || path === '/dieta/sugestao' || path === '/dieta/prontas'
 
 function TabBar() {
   const loc = useLocation()
@@ -82,6 +84,8 @@ function Screens() {
         <Route path="/dieta/definicoes" element={<div className="pt-safe mx-auto max-w-md px-4"><DefinicoesDiario /></div>} />
         <Route path="/dieta/metas" element={<div className="pt-safe mx-auto max-w-md px-4"><Metas /></div>} />
         <Route path="/dieta/plano" element={<div className="pt-safe mx-auto max-w-md px-4"><PlanoAlimentar /></div>} />
+        <Route path="/dieta/sugestao" element={<div className="pt-safe mx-auto max-w-md px-4"><DietaSugerida /></div>} />
+        <Route path="/dieta/prontas" element={<div className="pt-safe mx-auto max-w-md px-4"><DietasProntas /></div>} />
         <Route path="/plano/:id" element={<div className="pt-safe mx-auto max-w-md px-4"><RoutineEditor /></div>} />
       </Routes>
     )
@@ -117,6 +121,8 @@ function Screens() {
         <Route path="/dieta/definicoes" element={<div className="pt-safe mx-auto max-w-md px-4"><DefinicoesDiario /></div>} />
         <Route path="/dieta/metas" element={<div className="pt-safe mx-auto max-w-md px-4"><Metas /></div>} />
         <Route path="/dieta/plano" element={<div className="pt-safe mx-auto max-w-md px-4"><PlanoAlimentar /></div>} />
+        <Route path="/dieta/sugestao" element={<div className="pt-safe mx-auto max-w-md px-4"><DietaSugerida /></div>} />
+        <Route path="/dieta/prontas" element={<div className="pt-safe mx-auto max-w-md px-4"><DietasProntas /></div>} />
         <Route path="/plano/:id" element={<RoutineEditor />} />
           <Route path="/_dev/ui" element={<DevUI />} />
         </Routes>

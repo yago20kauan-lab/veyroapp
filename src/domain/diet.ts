@@ -1,6 +1,7 @@
 /** Calculador de metas (A7 item 8.1) e ciclo treino × descanso (8.2). Lógica pura. */
 import type { Macros } from '../db/schema'
 import { kcalFromMacros } from './nutrition'
+import { suggestTarget } from './dietSuggest'
 
 export type Sex = 'm' | 'f'
 export type Goal = 'cut' | 'maintain' | 'bulk'
@@ -8,11 +9,13 @@ export const ACTIVITY = {
   sedentario: { f: 1.2, label: 'Sedentário (trabalho sentado, pouco treino)' },
   leve: { f: 1.375, label: 'Leve (1–3 treinos/semana)' },
   moderado: { f: 1.55, label: 'Moderado (3–5 treinos/semana)' },
-  alto: { f: 1.725, label: 'Alto (6–7 treinos/semana ou trabalho em pé)' },
+  alto: { f: 1.725, label: 'Alto (6–7 treinos/semana)' },
+  atleta: { f: 1.9, label: 'Atleta (2 treinos/dia ou trabalho físico pesado)' },
 } as const
 export type Activity = keyof typeof ACTIVITY
 
-export const KCAL_FLOOR: Record<Sex, number> = { m: 1600, f: 1300 }
+/** Pisos de segurança da meta recomendada (também nunca abaixo da TMB). */
+export const KCAL_FLOOR: Record<Sex, number> = { m: 1500, f: 1200 }
 
 export function age(birthDate: string, today = new Date()) {
   const b = new Date(birthDate + 'T12:00')
@@ -26,20 +29,20 @@ export function bmr(sex: Sex, weightKg: number, heightCm: number, ageY: number) 
   return Math.round(10 * weightKg + 6.25 * heightCm - 5 * ageY + (sex === 'm' ? 5 : -161))
 }
 
-export type CalcInput = { sex: Sex; weightKg: number; heightCm: number; age: number; activity: Activity; goal: Goal; proteinPerKg?: number; fatPerKg?: number; deficitKcal?: number }
+export type CalcInput = { sex: Sex; weightKg: number; heightCm: number; age: number; activity: Activity; goal: Goal; proteinPerKg?: number; fatPerKg?: number; aggressive?: boolean; fast?: boolean; realTdee?: number }
 
+/**
+ * Meta de calorias (Mifflin-St Jeor × atividade, −20% definição / +10% ganho, pisos de segurança)
+ * e macros: proteína 2 g/kg, gordura 0,7 g/kg, o resto em carboidrato. As kcal sempre batem com os macros.
+ */
 export function calcTargets(i: CalcInput) {
-  const b = bmr(i.sex, i.weightKg, i.heightCm, i.age)
-  const tdee = Math.round(b * ACTIVITY[i.activity].f)
-  // perder ~0,75% do peso por semana (7700 kcal/kg), limitado a 300–750 kcal/dia
-  const autoDeficit = Math.round(Math.max(300, Math.min(750, (0.0075 * i.weightKg * 7700) / 7)) / 10) * 10
-  const adj = i.goal === 'cut' ? -(i.deficitKcal ?? autoDeficit) : i.goal === 'bulk' ? 300 : 0
-  let kcal = Math.max(KCAL_FLOOR[i.sex], tdee + adj)
+  const t = suggestTarget(i)
+  let kcal = t.kcal
   const p = Math.round((i.proteinPerKg ?? 2.0) * i.weightKg)
   const f = Math.round((i.fatPerKg ?? 0.7) * i.weightKg)
   const c = Math.max(50, Math.round((kcal - p * 4 - f * 9) / 4))
   kcal = kcalFromMacros(p, c, f)
-  return { bmr: b, tdee, adjustment: adj, targets: { kcal, p, c, f } as Macros, floored: tdee + adj < KCAL_FLOOR[i.sex] }
+  return { bmr: t.bmr, tdee: t.tdee, adjustment: t.raw - t.tdee, targets: { kcal, p, c, f } as Macros, floored: t.floored, suggestion: t }
 }
 
 /** Metas em % → gramas (as kcal ficam fixas, os gramas derivam). */

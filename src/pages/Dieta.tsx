@@ -11,6 +11,7 @@ import { localDate } from '../domain/plan'
 import { macrosFor } from '../domain/nutrition'
 import { dayLogs, diarySettings, ensureTemplatePlan, foodsMap, itemKey, logFood, mealMacros, plannedMeals, sumLogs, targetsFor, updateLogGrams, waterToday, type FoodLike } from '../lib/diet'
 import { GramsPicker, SwapSheet } from './diet/FoodSheets'
+import { recalcNotice } from '../lib/dietTemplates'
 import { VeyroMark } from '../ui/brand'
 
 const addDays = (date: string, n: number) => {
@@ -76,6 +77,7 @@ export default function Dieta() {
   const [favFor, setFavFor] = useState<string | null>(null)
   const [noteOpen, setNoteOpen] = useState(false)
   const [topMenu, setTopMenu] = useState(false)
+  const notice = useLiveQuery(() => recalcNotice(), [uid, logs?.length])
 
   const meals = useMemo(() => {
     const out = new Map<string, { name: string; time: string; planned?: PlanMeal }>()
@@ -148,6 +150,7 @@ export default function Dieta() {
       <div className="px-4 pt-3">
         {/* Atalhos */}
         <div className="no-scrollbar -mx-4 mb-3 flex gap-2 overflow-x-auto px-4">
+          <Chip onClick={() => nav('/dieta/prontas')}>Dietas prontas</Chip>
           <Chip onClick={() => nav('/dieta/plano')}>Plano alimentar</Chip>
           <Chip onClick={() => nav('/dieta/metas')}>Metas</Chip>
           <Chip onClick={() => nav('/dieta/compras')}>Lista de compras</Chip>
@@ -156,6 +159,17 @@ export default function Dieta() {
           <Chip onClick={() => nav('/dieta/relatorio')}>Relatório</Chip>
         </div>
 
+        {notice && (
+          <button onClick={() => nav('/dieta/sugestao')} className="mb-3 w-full rounded-card border border-lime/40 bg-lime/[0.05] px-4 py-3 text-left text-sm">
+            Sua meta mudou para <b className="num text-lime">{notice.kcal.toLocaleString('pt-BR')} kcal</b>. <span className="text-lime">Ver nova sugestão ›</span>
+          </button>
+        )}
+        {!plan.meals.length && !logs.length && !t.kcal && (
+          <button onClick={() => nav('/dieta/sugestao')} className="mb-3 w-full rounded-card border border-dashed border-lime/40 px-4 py-3 text-left text-sm">
+            <span className="font-semibold text-lime">Sua dieta sugerida</span>
+            <span className="block text-xs text-muted">Calculamos a meta pelo seu perfil e montamos 3 opções de cardápio.</span>
+          </button>
+        )}
         {!plan.meals.length && !logs.length && (
           <button onClick={async () => { await ensureTemplatePlan(); toast('Modelo aplicado. Edite em Plano alimentar.') }} className="mb-3 w-full rounded-card border border-dashed border-lime/40 px-4 py-3 text-left text-sm">
             <span className="font-semibold text-lime">Usar modelo de definição</span>

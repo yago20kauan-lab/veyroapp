@@ -3,7 +3,7 @@ import { seedExercises } from './seed-exercises'
 import { seedFoods } from './seed-nutrition'
 import { seedPrograms } from './seed-programs'
 
-export const SEED_VERSION = 4
+export const SEED_VERSION = 5
 
 /** Dados globais (iguais para todos os usuários): exercícios, alimentos e programas. */
 export async function seedGlobals() {

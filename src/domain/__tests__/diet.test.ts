@@ -7,19 +7,19 @@ describe('calculador de metas', () => {
     expect(bmr('m', 97.5, 180, 30)).toBe(1955)
     expect(bmr('f', 60, 165, 30)).toBe(1320)
   })
-  it('definição: déficit limitado e macros coerentes', () => {
+  it('definição: −20% do gasto e macros coerentes', () => {
     const r = calcTargets({ sex: 'm', weightKg: 97.5, heightCm: 180, age: 30, activity: 'moderado', goal: 'cut' })
     expect(r.tdee).toBe(3030)
-    expect(r.adjustment).toBe(-750)
+    expect(r.adjustment).toBe(-606)
     expect(r.targets.p).toBe(195)
     expect(r.targets.f).toBe(68)
     expect(r.targets.kcal).toBe(kcalFromMacros(r.targets.p, r.targets.c, r.targets.f))
-    expect(Math.abs(r.targets.kcal - 2280)).toBeLessThan(10)
+    expect(Math.abs(r.targets.kcal - 2424)).toBeLessThan(10)
   })
   it('nunca abaixo do piso sem acompanhamento', () => {
     const r = calcTargets({ sex: 'f', weightKg: 50, heightCm: 155, age: 40, activity: 'sedentario', goal: 'cut' })
     expect(r.floored).toBe(true)
-    expect(r.targets.kcal).toBeGreaterThanOrEqual(1290)
+    expect(r.targets.kcal).toBeGreaterThanOrEqual(1195)
   })
   it('% ↔ gramas mantém 4/4/9', () => {
     const g = percentToGrams(2300, { p: 33, c: 45, f: 22 })
