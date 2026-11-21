@@ -33,7 +33,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import { useSession } from './store/session'
-import { clearLocalUserData, startAutoSync } from './sync/engine'
+import { clearLocalUserData, startAutoSync, syncNow } from './sync/engine'
 import { db } from './db/schema'
 import { VeyroLoader } from './ui/brand'
 
@@ -162,6 +162,12 @@ export default function App() {
   const recovery = useAuthListener()
   const profileState = useLiveQuery(async () => ({ p: user ? await db.profiles.get(user.id) : undefined }), [user?.id])
   const [skipOnboarding, setSkipOnboarding] = useState(false)
+  const [waitedEnough, setWaitedEnough] = useState(false)
+  // nunca prender o app na tela de sincronizar: com dados no aparelho entra na hora; sem dados, espera no máximo 6 s
+  useEffect(() => {
+    const t = setTimeout(() => setWaitedEnough(true), 6000)
+    return () => clearTimeout(t)
+  }, [])
 
   useEffect(() => {
     if (user && !localMode) return startAutoSync()
@@ -182,10 +188,19 @@ export default function App() {
       </>
     )
   }
-  if (!bootSynced || !profileState) {
+  if (!profileState || (!bootSynced && !profileState.p && !waitedEnough)) {
     return (
       <div className="flex h-full items-center justify-center">
         <VeyroLoader size={48} label="Sincronizando" />
+      </div>
+    )
+  }
+  if (!bootSynced && !profileState.p) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center gap-4 px-8 text-center">
+        <VeyroLoader size={40} />
+        <p className="text-sm text-muted">A sincronização está demorando. Verifique a internet.</p>
+        <button className="h-11 rounded-full bg-lime px-6 font-semibold text-onlime" onClick={() => void syncNow()}>Tentar de novo</button>
       </div>
     )
   }
